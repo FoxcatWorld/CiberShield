@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enciclopedia • Front-End</title>
+  <link rel="stylesheet" href="src\styles.css" />
+</head>
+<body>
+  <!-- Fondo degradado decorativo -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <!-- Barra superior con marca y búsqueda -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
+      <strong id="brandText">CiberShield</strong>
+      <span id="brandSub">Tu escudo digital.</span>
+    </div>
+    <form class="search" role="search" aria-label="Buscar">
+      <input type="search" placeholder="Buscar…" aria-label="Buscar contenido" />
+      <button type="submit" aria-label="Ejecutar búsqueda">↵</button>
+    </form>
+  </header>
+
+  <!-- Menú de usuario emergente -->
+  <div class="user-menu" id="userMenu" hidden>
+    <div id="menuContent"></div>
+  </div>
+
+  <!-- Layout principal con paneles laterales y centro -->
+  <main class="layout">
+    <!-- Panel izquierdo: categorías -->
+    <nav class="side left" aria-label="Categorías izquierda">
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico earth" aria-hidden="true"></span>
+        <span class="txt">Paisajes y regiones</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico tiger" aria-hidden="true"></span>
+        <span class="txt">Seguridad Online</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico lab" aria-hidden="true"></span>
+        <span class="txt">Juegos</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico abacus" aria-hidden="true"></span>
+        <span class="txt">Articulos</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico ball" aria-hidden="true"></span>
+        <span class="txt">Recomendaciones</span>
+      </a>
+    </nav>
+
+    <!-- Centro: galería y chat IA -->
+    <section class="center" aria-labelledby="titulo">
+      <h1 id="titulo">
+        <span>CiberShield</span>
+        <em>Tu escudo digital.</em>
+      </h1>
+
+      <!-- Galería de personaje zorro -->
+      <div class="fox-gallery">
+        <img src="src/images/fox_idle.png"
+             alt="Zorro personaje"
+             class="fox-img"
+             id="foxImg"
+             tabindex="0" />
+        <div class="bubble-dialog" id="bubbleDialog" hidden>
+          ¡Hola! Pasa el mouse o haz clic para hablar conmigo.
+        </div>
+      </div>
+
+      <!-- Barra de chat, oculta por defecto -->
+      <form class="chat-bar" id="chatBar" hidden>
+        <input type="text" placeholder="Hazme una pregunta..." aria-label="Pregunta al zorro" />
+        <button type="submit">Enviar</button>
+      </form>
+
+      <p class="tagline">IA lista para ayudarte — versión educativa</p>
+    </section>
+
+    <!-- Panel derecho: categorías -->
+    <nav class="side right" aria-label="Categorías derecha">
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pharaoh" aria-hidden="true"></span>
+        <span class="txt">MinTic</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico people" aria-hidden="true"></span>
+        <span class="txt">Downloads</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pen" aria-hidden="true"></span>
+        <span class="txt">Referencias</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico palette" aria-hidden="true"></span>
+        <span class="txt">Examen</span>
+      </a>
+      <a class="tile" href="src/proximamente.html" role="button">
+        <span class="ico puzzle" aria-hidden="true"></span>
+        <span class="txt">Racha</span>
+      </a>
+    </nav>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
+  </footer>
+
+  <!-- Script principal: gestión de usuario y menú -->
+  <script>
+    // Elementos principales
+    const brandIcon = document.getElementById('brandIcon');
+    const userMenu = document.getElementById('userMenu');
+    const menuContent = document.getElementById('menuContent');
+    const brandText = document.getElementById('brandText');
+    const brandSub = document.getElementById('brandSub');
+    let usuario = null; // Usuario actual (null si no hay usuario)
+
+    // Simulación de racha de usuario
+    function getRacha() {
+      return [
+        {dia: 1, emoji: '🌞', activo: true},
+        {dia: 2, emoji: '🔥', activo: true},
+        {dia: 3, emoji: '🔥', activo: true},
+        {dia: 4, emoji: '❌', activo: false},
+        {dia: 5, emoji: '🔥', activo: true},
+        {dia: 6, emoji: '💧', activo: false},
+        {dia: 7, emoji: '🔥', activo: true}
+      ];
+    }
+
+    // Mostrar/ocultar menú de usuario
+    brandIcon.addEventListener('click', () => {
+      if (userMenu.hidden) {
+        renderMenu();
+        userMenu.hidden = false;
+      } else {
+        userMenu.hidden = true;
+      }
+    });
+
+    // Cerrar menú al hacer click fuera
+    document.addEventListener('mousedown', e => {
+      if (!userMenu.contains(e.target) && e.target !== brandIcon) {
+        userMenu.hidden = true;
+      }
+    });
+
+    // Renderizar menú según estado de usuario
+    function renderMenu() {
+      if (!usuario) {
+        menuContent.innerHTML = `
+          <h3>Registro / Login</h3>
+          <input type="text" id="nombreUsuario" placeholder="Nombre de usuario" autocomplete="username" />
+          <button onclick="registrarUsuario()">Registrarse / Iniciar sesión</button>
+        `;
+      } else {
+        const racha = getRacha();
+        menuContent.innerHTML = `
+          <h3>Usuario: <b>@${usuario}</b></h3>
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+          <div class="calendar">
+            ${racha.map(d => `<span title="Día ${d.dia}">${d.emoji}</span>`).join('')}
+          </div>
+          <small style="display:block;margin-top:8px;color:var(--c-muted);">Racha: ${racha.filter(d=>d.emoji==='🔥').length} días</small>
+        `;
+      }
+    }
+
+    // Registrar usuario (simulado)
+    window.registrarUsuario = function() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre) {
+        usuario = nombre;
+        brandText.textContent = "Bienvenido,";
+        brandSub.textContent = `@${usuario}`;
+        userMenu.hidden = true;
+      }
+    }
+
+    // Cerrar sesión
+    window.cerrarSesion = function() {
+      usuario = null;
+      brandText.textContent = "CiberShield";
+      brandSub.textContent = "Tu escudo digital.";
+      userMenu.hidden = true;
+    }
+  </script>
+
+  <!-- Script para interacción con el zorro y chat -->
+  <script>
+    // Elementos de la galería y chat
+    const foxImg = document.getElementById('foxImg');
+    const bubble = document.getElementById('bubbleDialog');
+    const chatBar = document.getElementById('chatBar');
+    let talking = false;
+
+    // Mostrar burbuja al pasar mouse
+    foxImg.addEventListener('mouseenter', () => {
+      if (!talking) bubble.hidden = false;
+    });
+    foxImg.addEventListener('mouseleave', () => {
+      if (!talking) bubble.hidden = true;
+    });
+
+    // Activar chat al hacer clic en el zorro
+    foxImg.addEventListener('click', () => {
+      foxImg.src = 'src/images/fox_talk.png';
+      bubble.textContent = '¡Estoy listo para responder!';
+      chatBar.hidden = false;
+      talking = true;
+    });
+  </script>
+</body>
+</html>
