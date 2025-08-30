@@ -1,0 +1,50 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  isAdmin: Boolean
+}
+
+type Topic @table {
+  name: String!
+  description: String!
+  createdAt: Timestamp!
+  iconUrl: String
+}
+
+type Article @table {
+  title: String!
+  content: String!
+  topic: Topic!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  summary: String
+  keywords: [String]
+}
+
+type Recommendation @table {
+  description: String!
+  article: Article!
+  order: Int!
+}
+
+type UserArticleFavorite @table(key: ["user", "article"]) {
+  user: User!
+  article: Article!
+  favoritedAt: Timestamp!
+}
+
+type ArticleRating @table(key: ["user", "article"]) {
+  user: User!
+  article: Article!
+  rating: Int!
+  ratedAt: Timestamp!
+}
+
+type Suggestion @table {
+  user: User!
+  suggestionText: String!
+  createdAt: Timestamp!
+  status: String
+}

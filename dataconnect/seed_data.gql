@@ -1,0 +1,28 @@
+mutation SeedDatabase @auth(level: USER) {
+  topic_insertMany(data: [
+    {
+      name: "Technology",
+      description: "Articles about the latest technology trends",
+      createdAt: "2024-01-01T00:00:00Z"
+    },
+    {
+      name: "Science",
+      description: "Articles about scientific discoveries",
+      createdAt: "2024-01-01T00:00:00Z"
+    }
+  ])
+  user_insertMany(data: [
+    {
+      displayName: "John Doe",
+      email: "john.doe@example.com",
+      createdAt: "2024-01-01T00:00:00Z",
+      isAdmin: false
+    },
+    {
+      displayName: "Jane Smith",
+      email: "jane.smith@example.com",
+      createdAt: "2024-01-01T00:00:00Z",
+      isAdmin: true
+    }
+  ])
+}

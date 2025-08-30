@@ -1,0 +1,83 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juegos • CiberShield</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Fondo degradado decorativo -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <!-- Barra superior -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
+      <strong id="brandText">CiberShield</strong>
+      <span id="brandSub">Tu escudo digital.</span>
+    </div>
+    <form class="search" role="search" aria-label="Buscar">
+      <input type="search" placeholder="Buscar…" aria-label="Buscar contenido" />
+      <button type="submit" aria-label="Ejecutar búsqueda">↵</button>
+    </form>
+  </header>
+
+  <!-- Menú de usuario emergente -->
+  <div class="user-menu" id="userMenu" hidden>
+    <div id="menuContent"></div>
+  </div>
+
+  <!-- Contenido Principal Centrado -->
+  <main class="main-centered">
+    <section class="games-header">
+      <h1>Juegos Educativos</h1>
+      <p>Mejora tus habilidades mientras te diviertes</p>
+    </section>
+
+    <div class="games-gallery">
+      <!-- Tarjetas de juego -->
+      <a href="#" class="game-card">
+        <img src="images/niños_trompo.jpg" alt="Seguridad en Línea Quiz" class="game-image">
+        <div class="game-info">
+          <h3 class="game-title">Seguridad en Línea Quiz</h3>
+          <p class="game-description">Pon a prueba tus conocimientos sobre seguridad digital</p>
+        </div>
+      </a>
+      <a href="#" class="game-card">
+        <img src="images/placeholder-game2.jpg" alt="CiberAventura" class="game-image">
+        <div class="game-info">
+          <h3 class="game-title">CiberAventura</h3>
+          <p class="game-description">Aventura gráfica para aprender sobre amenazas digitales</p>
+        </div>
+      </a>
+      <a href="#" class="game-card">
+        <img src="images/placeholder-game3.jpg" alt="Password Defender" class="game-image">
+        <div class="game-info">
+          <h3 class="game-title">Password Defender</h3>
+          <p class="game-description">Juego de estrategia para crear contraseñas seguras</p>
+        </div>
+      </a>
+      <a href="#" class="game-card">
+        <img src="images/placeholder-game4.jpg" alt="Phishing Hunter" class="game-image">
+        <div class="game-info">
+          <h3 class="game-title">Phishing Hunter</h3>
+          <p class="game-description">Identifica correos fraudulentos en este juego de detective</p>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- Botón de volver al inicio -->
+  <a href="../index.html" class="volver-btn" style="position: fixed; bottom: 20px; left: 20px;" title="Volver al inicio">← Volver</a>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
+  </footer>
+
+  <!-- Script de UI -->
+  <script src="ui.js"></script>
+</body>
+</html>

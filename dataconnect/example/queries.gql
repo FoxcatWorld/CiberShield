@@ -1,0 +1,21 @@
+mutation InsertUser @auth(level: USER) {
+  user_insert(data: {
+    id_expr: "auth.uid"
+  })
+}
+
+query GetCurrentUser @auth(level: USER) {
+  user(key: {id_expr: "auth.uid"}) {
+    id
+  }
+}
+
+mutation UpdateUserProfile($displayName: String) @auth(level: USER) {
+  user_update(key: {id_expr: "auth.uid"}, data: {
+    displayName: $displayName
+  })
+}
+
+mutation DeleteCurrentUser @auth(level: USER) {
+  user_delete(key: {id_expr: "auth.uid"})
+}

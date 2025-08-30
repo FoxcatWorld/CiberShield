@@ -1,169 +1,266 @@
-/* ============ Variables de color ============ */
-:root{
-  --bg-0: #0b1020;       /* azul noche */
-  --bg-1: #111737;
-  --c-azul:   #2a6df6;
-  --c-cyan:   #20d4f8;
-  --c-morado: #7a5cff;
-  --c-purp:   #b34dff;
-  --c-text:   #eaf2ff;
-  --c-muted:  #b8c4e6;
-  --tile-bg:  #131b3a;
-  --tile-br:  rgba(255,255,255,.08);
-  --glass:    rgba(255,255,255,.06);
-  --shadow:   0 10px 30px rgba(0,0,0,.35);
+
+/* =================================================================================
+   CiberShield - Hoja de Estilos Principal
+   =================================================================================
+   Este archivo contiene todos los estilos para la enciclopedia, incluyendo
+   variables de color, layout, componentes y media queries para responsividad.
+*/
+
+/* =================================================================================
+   Variables de Color y Estilos Base
+   ================================================================================= */
+
+:root {
+  /* Paleta de colores principal */
+  --bg-0: #0b1020;       /* Azul noche (fondo principal) */
+  --bg-1: #111737;       /* Azul oscuro (fondo secundario) */
+  --c-azul:   #2a6df6;   /* Azul brillante */
+  --c-cyan:   #20d4f8;   /* Cyan brillante */
+  --c-morado: #7a5cff;   /* Morado */
+  --c-purp:   #b34dff;   /* Púrpura */
+  --c-text:   #eaf2ff;   /* Color de texto principal */
+  --c-muted:  #b8c4e6;   /* Color de texto atenuado */
+  
+  /* Estilos para componentes */
+  --tile-bg:  #131b3a;   /* Fondo de los "tiles" o tarjetas */
+  --tile-br:  rgba(255, 255, 255, .08); /* Borde de los tiles */
+  --glass:    rgba(255, 255, 255, .06); /* Efecto cristal */
+  --shadow:   0 10px 30px rgba(0, 0, 0, .35); /* Sombra principal */
 }
 
-/* Reset mínimo accesible */
-*{ box-sizing: border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif;
-  color: var(--c-text);
-  background: var(--bg-0);
-  overflow-x: hidden;
+/* =================================================================================
+   Reset y Estilos Globales
+   ================================================================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-/* Fondo degradado suave + ondas */
-.bg-gradient{
-  position: fixed; inset: -20vmax;
-  background:
-    radial-gradient(60vmax 60vmax at 10% 10%, rgba(42,109,246,.20), transparent 60%),
-    radial-gradient(60vmax 60vmax at 90% 20%, rgba(32,212,248,.18), transparent 65%),
-    radial-gradient(80vmax 60vmax at 50% 120%, rgba(122,92,255,.22), transparent 60%),
-    linear-gradient(160deg, var(--bg-1), var(--bg-0) 40%, #070a16);
-  filter: saturate(1.05);
-  z-index:-2;
-}
-
-/* ============ Topbar ============ */
-.topbar{
-  position: sticky; top:0; z-index: 5;
-  display:flex; align-items:center; gap:1rem;
-  padding: .75rem 1rem;
-  backdrop-filter: blur(10px);
-  background: linear-gradient(90deg, rgba(42,109,246,.25), rgba(179,77,255,.20));
-  border-bottom: 1px solid var(--tile-br);
-}
-.brand{
-  display:flex; align-items:center; gap:.6rem;
-  font-weight:600; letter-spacing:.2px;
-}
-.brand-leaf{
-  display:inline-grid; place-items:center;
-  width:28px; height:28px; border-radius:8px;
-  background: conic-gradient(from 180deg, var(--c-cyan), var(--c-azul), var(--c-morado), var(--c-purp), var(--c-cyan));
-  box-shadow: inset 0 0 12px rgba(255,255,255,.25);
-}
-
-/* Buscador */
-.search{
-  margin-left:auto; display:flex; gap:.5rem; align-items:center;
-}
-.search input{
-  width:min(48vw, 520px);
-  padding:.65rem .9rem; border-radius:12px; border:1px solid var(--tile-br);
-  background: var(--glass); color: var(--c-text);
-  outline: none;
-}
-.search input::placeholder{ color: var(--c-muted); }
-.search button{
-  padding:.65rem .9rem; border-radius:12px; border:1px solid var(--tile-br);
-  background: linear-gradient(135deg, var(--c-azul), var(--c-morado));
-  color:white; cursor:pointer;
-}
-
-/* ============ Layout principal ============ */
 html, body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden; /* Previene el desbordamiento horizontal */
 }
 
-.layout {
-  min-height: 100vh;
+body {
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif;
+  color: var(--c-text);
+  background: var(--bg-0);
+}
+
+/* =================================================================================
+   Fondo Decorativo
+   ================================================================================= */
+
+.bg-gradient {
+  position: fixed;
+  inset: -20vmax;
+  z-index: -2;
+  background:
+    radial-gradient(60vmax 60vmax at 10% 10%, rgba(42, 109, 246, .20), transparent 60%),
+    radial-gradient(60vmax 60vmax at 90% 20%, rgba(32, 212, 248, .18), transparent 65%),
+    radial-gradient(80vmax 60vmax at 50% 120%, rgba(122, 92, 255, .22), transparent 60%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-0) 40%, #070a16);
+  filter: saturate(1.05);
+}
+
+/* =================================================================================
+   Barra Superior (Topbar)
+   ================================================================================= */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
+  padding: .75rem 1rem;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(90deg, rgba(42, 109, 246, .25), rgba(179, 77, 255, .20));
+  border-bottom: 1px solid var(--tile-br);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+.brand-leaf {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: conic-gradient(from 180deg, var(--c-cyan), var(--c-azul), var(--c-morado), var(--c-purp), var(--c-cyan));
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, .25);
+  cursor: pointer; /* Added for clickable indication */
+  transition: transform .2s ease, box-shadow .2s ease; /* Added for smooth transition */
+}
+
+.brand-leaf:hover { /* Added hover effect */
+  transform: scale(1.1);
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, .45), 0 0 15px rgba(32, 212, 248, .4);
+}
+
+/* Buscador */
+.search {
+  margin-left: auto;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+
+.search input {
+  width: min(48vw, 520px);
+  padding: .65rem .9rem;
+  border-radius: 12px;
+  border: 1px solid var(--tile-br);
+  background: var(--glass);
+  color: var(--c-text);
+  outline: none;
+}
+
+.search input::placeholder {
+  color: var(--c-muted);
+}
+
+.search button {
+  padding: .65rem .9rem;
+  border-radius: 12px;
+  border: 1px solid var(--tile-br);
+  background: linear-gradient(135deg, var(--c-azul), var(--c-morado));
+  color: white;
+  cursor: pointer;
+}
+
+/* =================================================================================
+   Layout Principal
+   ================================================================================= */
+
+.layout {
+  display: grid;
+  gap: 1rem;
   padding: clamp(12px, 2vw, 24px);
   width: 100%;
 }
 
-.center {
+/* En pantallas más grandes, usamos un layout de 3 columnas */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 2fr 5fr 2fr;
+  }
+}
+
+.main-centered {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: auto;
-  gap: clamp(14px, 3vw, 22px);
-  padding: clamp(10px, 2vw, 20px);
-  text-align: center;
+  min-height: calc(100vh - 120px); /* Ajustar para altura de topbar y footer */
+  padding: 1rem;
 }
 
-/* Paneles laterales */
-.side{
-  display:grid; gap: clamp(10px, 1.5vw, 16px);
-  align-content:start;
+
+/* Paneles laterales y tarjetas */
+.side {
+  display: grid;
+  gap: clamp(10px, 1.5vw, 16px);
+  align-content: start;
 }
-.tile{
-  display:grid; grid-template-columns: 56px 1fr; gap:12px;
-  align-items:center; padding:14px;
-  background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
-  border: 1px solid var(--tile-br); border-radius:16px;
+
+.tile {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  background: linear-gradient(180deg, var(--tile-bg), rgba(10, 15, 35, .8));
+  border: 1px solid var(--tile-br);
+  border-radius: 16px;
   box-shadow: var(--shadow);
-  text-decoration:none; color: var(--c-text);
+  text-decoration: none;
+  color: var(--c-text);
   transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
 }
-.tile:hover{
+
+.tile:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 40px rgba(20, 30, 70, .55);
   border-color: rgba(98, 160, 255, .45);
 }
-.tile .txt{ font-weight:600; }
 
-/* Iconos simples en CSS */
-.ico{
-  width:48px; height:48px; border-radius:12px;
-  display:grid; place-items:center;
+.tile .txt {
+  font-weight: 600;
+}
+
+/* =================================================================================
+   Iconos y Contenido Central
+   ================================================================================= */
+
+/* Iconos en CSS */
+.ico {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 50%),
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .25), transparent 50%),
     linear-gradient(135deg, var(--c-cyan), var(--c-morado));
   position: relative;
-  box-shadow: inset 0 0 10px rgba(0,0,0,.25);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, .25);
 }
-.ico::after{
-  content:""; position:absolute; inset:10px; border-radius:8px;
-  border:2px solid rgba(255,255,255,.55);
-  mix-blend-mode: screen; opacity:.7;
-}
-.ico.earth::before{ content:"🌍"; font-size:26px; }
-.ico.tiger::before{ content:"🐯"; font-size:26px; }
-.ico.lab::before{ content:"⚗️"; font-size:26px; }
-.ico.abacus::before{ content:"🧮"; font-size:26px; }
-.ico.ball::before{ content:"⚽"; font-size:26px; }
-.ico.pharaoh::before{ content:"🛕"; font-size:26px; }
-.ico.people::before{ content:"👥"; font-size:24px; }
-.ico.pen::before{ content:"✒️"; font-size:24px; }
-.ico.palette::before{ content:"🎨"; font-size:24px; }
-.ico.puzzle::before{ content:"🧩"; font-size:24px; }
 
-/* Centro */
-.center{
-  display:grid; place-items:center; text-align:center;
+.ico::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, .55);
+  mix-blend-mode: screen;
+  opacity: .7;
+}
+
+/* Emojis para los iconos */
+.ico.earth::before { content:"🌍"; font-size:26px; }
+.ico.tiger::before { content:"🐯"; font-size:26px; }
+.ico.lab::before { content:"⚗️"; font-size:26px; }
+.ico.abacus::before { content:"🧮"; font-size:26px; }
+.ico.ball::before { content:"⚽"; font-size:26px; }
+.ico.pharaoh::before { content:"🛕"; font-size:26px; }
+.ico.people::before { content:"👥"; font-size:24px; }
+.ico.pen::before { content:"✒️"; font-size:24px; }
+.ico.palette::before { content:"🎨"; font-size:24px; }
+.ico.puzzle::before { content:"🧩"; font-size:24px; }
+
+/* Contenido central */
+.center {
+  display: grid;
+  place-items: center;
+  text-align: center;
   gap: clamp(14px, 3vw, 22px);
   padding: clamp(10px, 2vw, 20px);
 }
-.center h1{
-  margin:0;
-  display:grid; gap:6px;
-  font-weight:800; letter-spacing:.3px;
+
+.center h1 {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  font-weight: 800;
+  letter-spacing: .3px;
 }
-.center h1 span{ font-size: clamp(16px, 2.2vw, 22px); color: var(--c-muted); }
+
+.center h1 span {
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: var(--c-muted);
+}
+
 .center h1 em {
   font-style: normal;
   font-size: clamp(28px, 5.5vw, 64px);
@@ -172,15 +269,20 @@ html, body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 2px 18px rgba(90,130,255,.25);
+  text-shadow: 0 2px 18px rgba(90, 130, 255, .25);
   margin-bottom: 8px;
   padding-bottom: 6px;
 }
-.tagline{
-  margin:0; color: var(--c-muted);
+
+.tagline {
+  margin: 0;
+  color: var(--c-muted);
 }
 
-/* ==== Galería de zorros y chat ==== */
+/* =================================================================================
+   Galería del Zorro y Chat
+   ================================================================================= */
+
 .fox-gallery {
   display: flex;
   align-items: center;
@@ -195,14 +297,14 @@ html, body {
   width: clamp(120px, 22vw, 220px);
   height: auto;
   border-radius: 18px;
-  box-shadow: 0 6px 32px rgba(42,109,246,.18);
+  box-shadow: 0 6px 32px rgba(42, 109, 246, .18);
   background: var(--tile-bg);
   transition: box-shadow .2s, transform .2s;
   cursor: pointer;
 }
 
 .fox-img:hover, .fox-img:focus {
-  box-shadow: 0 12px 40px rgba(32,212,248,.25);
+  box-shadow: 0 12px 40px rgba(32, 212, 248, .25);
   transform: scale(1.04);
 }
 
@@ -216,7 +318,7 @@ html, body {
   background: var(--glass);
   color: var(--c-text);
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(32,212,248,.12);
+  box-shadow: 0 4px 24px rgba(32, 212, 248, .12);
   padding: 16px 18px;
   font-size: 1rem;
   z-index: 2;
@@ -234,7 +336,7 @@ html, body {
   max-width: 420px;
   background: var(--glass);
   border-radius: 14px;
-  box-shadow: 0 2px 18px rgba(122,92,255,.10);
+  box-shadow: 0 2px 18px rgba(122, 92, 255, .10);
   padding: 10px 16px;
   border: 1px solid var(--tile-br);
 }
@@ -265,66 +367,26 @@ html, body {
   background: linear-gradient(90deg, var(--c-morado), var(--c-azul));
 }
 
-/* Responsividad horizontal */
-@media (max-width: 700px) {
-  .fox-gallery {
-    gap: 16px;
-  }
-  .bubble-dialog {
-    min-width: 120px;
-    max-width: 180px;
-    font-size: .95rem;
-    left: 100%;
-    transform: translateY(-50%) translateX(10px);
-    padding: 10px 12px;
-  }
-  .fox-img {
-    width: clamp(80px, 40vw, 140px);
-  }
-  .chat-bar {
-    max-width: 98vw;
-    padding: 8px 6px;
-    gap: 6px;
-  }
-}
+/* =================================================================================
+   Sección "Próximamente" y "Juegos"
+   ================================================================================= */
 
-/* Siempre horizontal, nunca apilar vertical */
-.fox-gallery, .chat-bar {
-  flex-direction: row !important;
-}
-
-/* Sección "Próximamente" */
-.proximamente-section {
-  min-height: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
-  border-radius: 22px;
-  box-shadow: var(--shadow);
-  padding: 38px 28px;
-  margin: 0 auto;
-  max-width: 420px;
+.proximamente-section, .games-header {
+  padding: 2rem;
   text-align: center;
 }
 
-.proximamente-section h1 {
-  font-size: clamp(28px, 5vw, 44px);
-  font-weight: 800;
-  margin: 0;
+.proximamente-section h1, .games-header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
   background: linear-gradient(90deg, var(--c-azul), var(--c-cyan), var(--c-morado), var(--c-purp));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 2px 18px rgba(90,130,255,.18);
 }
 
-.proximamente-section p {
+.proximamente-section p, .games-header p {
   color: var(--c-muted);
-  font-size: 1.15rem;
-  margin: 0 0 12px 0;
+  font-size: 1.1rem;
 }
 
 .volver-btn {
@@ -336,7 +398,7 @@ html, body {
   font-weight: 600;
   text-decoration: none;
   border: none;
-  box-shadow: 0 2px 18px rgba(122,92,255,.10);
+  box-shadow: 0 2px 18px rgba(122, 92, 255, .10);
   transition: background .2s, transform .2s;
   font-size: 1rem;
   margin-top: 10px;
@@ -347,30 +409,61 @@ html, body {
   transform: scale(1.04);
 }
 
-/* Responsivo para "Próximamente" */
-@media (max-width: 600px) {
-  .proximamente-section {
-    padding: 18px 8px;
-    max-width: 98vw;
-    gap: 14px;
-  }
-  .proximamente-section h1 {
-    font-size: 2rem;
-  }
+.games-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Interactividad logo marca */
-.brand-leaf.interactive {
-  cursor: pointer;
-  transition: box-shadow .2s, transform .2s, filter .2s;
-}
-.brand-leaf.interactive:hover, .brand-leaf.interactive:focus {
-  box-shadow: 0 0 18px 4px var(--c-cyan), 0 0 0 2px var(--c-azul);
-  transform: scale(1.08) rotate(-8deg);
-  filter: brightness(1.2) saturate(1.3);
+.game-card {
+  background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--c-text);
+  border: 1px solid var(--tile-br);
+  box-shadow: var(--shadow);
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Menú emergente usuario */
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(20, 30, 70, .55);
+  border-color: rgba(98, 160, 255, .45);
+}
+
+.game-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.game-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.game-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.game-description {
+  color: var(--c-muted);
+  font-size: 0.9rem;
+}
+
+/* =================================================================================
+   Menú de Usuario Emergente
+   ================================================================================= */
+
 .user-menu {
   position: absolute;
   top: 56px;
@@ -378,16 +471,23 @@ html, body {
   min-width: 260px;
   background: var(--tile-bg);
   border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(32,212,248,.18);
+  box-shadow: 0 8px 32px rgba(32, 212, 248, .18);
   border: 1px solid var(--tile-br);
   z-index: 99;
   padding: 18px 20px;
   color: var(--c-text);
   animation: fadeIn .22s;
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-12px);} to { opacity: 1; transform: none;} }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: none; }
+}
+
 .user-menu h3 { margin: 0 0 12px 0; font-size: 1.1rem; }
-.user-menu input, .user-menu button {
+
+.user-menu input,
+.user-menu button {
   margin: 6px 0;
   padding: 8px 12px;
   border-radius: 10px;
@@ -398,6 +498,7 @@ html, body {
   outline: none;
   width: 100%;
 }
+
 .user-menu button {
   background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
   color: white;
@@ -406,9 +507,11 @@ html, body {
   border: none;
   margin-top: 8px;
 }
+
 .user-menu button:hover {
   background: linear-gradient(90deg, var(--c-morado), var(--c-azul));
 }
+
 .user-menu .calendar {
   display: flex;
   gap: 8px;
@@ -416,6 +519,7 @@ html, body {
   justify-content: center;
   font-size: 1.5rem;
 }
+
 .user-menu .calendar span {
   display: inline-block;
   width: 32px;
@@ -424,4 +528,56 @@ html, body {
   line-height: 32px;
   border-radius: 8px;
   background: var(--glass);
+}
+
+/* =================================================================================
+   Media Queries para Responsividad
+   ================================================================================= */
+
+/* Para pantallas de 480px o más */
+@media (min-width: 480px) {
+  .layout {
+    padding: clamp(16px, 3vw, 32px);
+  }
+}
+
+/* Para pantallas de menos de 768px (tablets y móviles) */
+@media (max-width: 767px) {
+  .side.right, .side.left {
+    display: none; /* Ocultamos los paneles laterales en pantallas pequeñas */
+  }
+  
+  .layout {
+    grid-template-columns: 1fr; /* Una sola columna */
+  }
+
+  .search input {
+    width: 40vw;
+  }
+}
+
+/* Para pantallas de menos de 480px (móviles pequeños) */
+@media (max-width: 479px) {
+  .topbar {
+    flex-direction: column;
+    gap: .5rem;
+    padding: .5rem;
+  }
+
+  .search {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .search input {
+    width: 100%;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .games-gallery {
+    padding: 0.5rem;
+  }
 }

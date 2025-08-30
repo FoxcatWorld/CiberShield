@@ -1,0 +1,44 @@
+CiberShield es una plataforma interactiva diseñada para educar a los usuarios sobre seguridad online, por regiones, en diferentes culturas y otros temas. Su objetivo es proporcionar un entorno de aprendizaje atractivo y accesible para todas las edades, combinando información con actividades lúdicas.
+
+Cómo usar CiberShield:
+
+1.  Navegación: Utiliza el menú principal o la barra de búsqueda para explorar temas de tu interés.
+2.  Artículos: Lee los artículos informativos para adquirir conocimientos sobre seguridad online, cultura y geografía.
+3.  Juegos: Participa en los juegos interactivos para reforzar tu aprendizaje de manera divertida.
+4.  Multimedia: Explora videos, imágenes y otros recursos visuales que complementan el contenido educativo.
+5.  Racha: Manten la Racha cada dua cumpliendo diversas misiones interactivas mientras aprendes sobre ciberseguridad y uso seguro del internet y Apps .
+
+Esperamos que disfrutes tu experiencia de aprendizaje en CiberShield.
+
+---
+
+**Para ejecutar CiberShield localmente:**
+
+Para poder ejecutar esta aplicación web en tu dispositivo, sigue los siguientes pasos:
+
+**1. Requisitos Previos:**
+*   **Node.js y npm:** Asegúrate de tener Node.js (que incluye npm, el gestor de paquetes de Node) instalado en tu sistema. Puedes descargarlo desde la página oficial de Node.js: https://nodejs.org/
+
+**2. Instalación de Dependencias:**
+*   Navega hasta la raíz del proyecto CiberShield en tu terminal.
+*   Ejecuta el siguiente comando para instalar todas las dependencias del proyecto (incluyendo Firebase y Vite):
+    ```bash
+    npm install
+    ```
+
+**3. Iniciar la Aplicación:**
+*   Una vez que las dependencias estén instaladas, puedes iniciar el servidor de desarrollo. Ejecuta el siguiente comando en la terminal desde la raíz del proyecto:
+    ```bash
+    npm run dev
+    ```
+*   Esto iniciará un servidor local (probablemente en `http://localhost:5173` o un puerto similar). Abre tu navegador web y visita la URL que te proporcionará la terminal para ver la aplicación en funcionamiento.
+
+**Dependencias Clave:**
+*   **Firebase:** Para la integración con los servicios backend de Firebase (Autenticación, Firestore, etc.).
+*   **Vite:** Un bundler y servidor de desarrollo para proyectos web modernos.
+*   **@dataconnect/generated:** Un paquete generado para la integración con Firebase Data Connect.
+
+**Punto Importante**
+*Dentro de la aplicación no se utilizan APIs de métodos o inteligencias artificiales creadas con anterioridad. Las posibles claves (Keys) de APIs que puedan encontrarse son necesarias únicamente para gestionar la información en una base de datos dinámica y segura en Firebase, cualquier carpeta de IA es para futura implementacion del asistente y mascota virtual.*
+*El código puede parecer un “espagueti” de comentarios y funciones, debido al poco tiempo disponible y a la cantidad de personas involucradas, lo que no permitió un margen suficiente para la corrección completa de errores ni la depuración de las funcionalidades. Aun así, se hizo todo lo posible para mantenerlo entendible y generar la menor cantidad de confusión posible. En caso de que el proyecto continúe en desarrollo, se realizarán las correcciones y optimizaciones pertinentes.*
+*Todo este trabajo fue posible gracias a la comunidad de **FoxcatWorld** y sus diversos miembros. Se agradece a cada uno de ellos por sus aportes a lo largo de estas dos semanas tan intensas de trabajos y examenes, igualmente muchos animos para ganar y seguir adelante*
