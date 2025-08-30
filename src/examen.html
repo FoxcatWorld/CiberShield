@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exámenes • CiberShield</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Ocultar paneles laterales */
+    .side {
+      display: none !important;
+    }
+    
+    /* Ajustar el layout principal */
+    .layout {
+      display: block !important;
+    }
+    
+    .center {
+      width: 100% !important;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Estilos para la sección de niveles */
+    .levels-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .level-card {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
+      border-radius: 16px;
+      overflow: hidden;
+      color: var(--c-text);
+      border: 1px solid var(--tile-br);
+      box-shadow: var(--shadow);
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .level-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(20, 30, 70, .55);
+      border-color: rgba(98, 160, 255, .45);
+    }
+
+    .level-header {
+      padding: 25px;
+      text-align: center;
+      background: linear-gradient(90deg, rgba(42,109,246,.2), rgba(122,92,255,.2));
+    }
+
+    .level-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .level-title {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .level-subtitle {
+      color: var(--c-muted);
+      margin: 8px 0 0;
+      font-size: 1rem;
+    }
+
+    .level-content {
+      padding: 25px;
+      flex-grow: 1;
+    }
+
+    .level-description {
+      margin: 0 0 20px 0;
+      color: var(--c-muted);
+      line-height: 1.6;
+    }
+
+    .level-features {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .level-features li {
+      margin-bottom: 10px;
+      padding-left: 25px;
+      position: relative;
+      color: var(--c-text);
+    }
+
+    .level-features li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--c-cyan);
+      font-weight: bold;
+    }
+
+    .level-footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid var(--tile-br);
+    }
+
+    .start-exam-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .start-exam-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(122,92,255,.3);
+    }
+
+    .exam-header {
+      text-align: center;
+      margin: 15px 0 30px;
+    }
+
+    .exam-header h1 {
+      font-size: clamp(28px, 5.5vw, 48px);
+      margin: 0;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-cyan), var(--c-morado), var(--c-purp));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .exam-header p {
+      color: var(--c-muted);
+      font-size: 1.1rem;
+      margin: 10px 0 0;
+    }
+
+    /* Botón de volver al inicio (solo flecha) */
+    .back-to-home {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--c-azul), var(--c-morado));
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 24px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(122,92,255,.25);
+      z-index: 10;
+    }
+
+    .back-to-home:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(122,92,255,.4);
+    }
+
+    /* Ajuste para dispositivos móviles */
+    @media (max-width: 700px) {
+      .levels-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .back-to-home {
+        left: 15px;
+        bottom: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+      
+      .level-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo degradado decorativo -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <!-- Barra superior con marca y búsqueda -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
+      <strong id="brandText">CiberShield</strong>
+      <span id="brandSub">Tu escudo digital.</span>
+    </div>
+    <form class="search" role="search" aria-label="Buscar">
+      <input type="search" placeholder="Buscar…" aria-label="Buscar contenido" />
+      <button type="submit" aria-label="Ejecutar búsqueda">↵</button>
+    </form>
+  </header>
+
+  <!-- Menú de usuario emergente -->
+  <div class="user-menu" id="userMenu" hidden>
+    <div id="menuContent"></div>
+  </div>
+
+  <!-- Layout principal con paneles laterales ocultos -->
+  <main class="layout">
+    <!-- Centro: selección de niveles -->
+    <section class="center" aria-labelledby="titulo">
+      <div class="exam-header">
+        <h1>Evaluación de Conocimientos</h1>
+        <p>Selecciona tu perfil para realizar el examen correspondiente</p>
+      </div>
+
+      <div class="levels-container">
+        <!-- Nivel Estudiante -->
+        <div class="level-card" data-level="estudiante">
+          <div class="level-header">
+            <div class="level-icon">🎓</div>
+            <h2 class="level-title">Nivel Estudiante</h2>
+            <p class="level-subtitle">Evaluación básica - 15 preguntas</p>
+          </div>
+          <div class="level-content">
+            <p class="level-description">Examen diseñado para estudiantes que desean evaluar sus conocimientos básicos sobre seguridad digital.</p>
+            <ul class="level-features">
+              <li>15 preguntas de opción múltiple</li>
+              <li>Tiempo estimado: 20 minutos</li>
+              <li>Enfoque en conceptos fundamentales</li>
+              <li>Preguntas directas y prácticas</li>
+              <li>Resultado inmediato al finalizar</li>
+            </ul>
+          </div>
+          <div class="level-footer">
+            <button class="start-exam-btn" data-level="estudiante">Comenzar Examen</button>
+          </div>
+        </div>
+
+        <!-- Nivel Padre/Madre -->
+        <div class="level-card" data-level="padre">
+          <div class="level-header">
+            <div class="level-icon">👨‍👩‍👧‍👦</div>
+            <h2 class="level-title">Nivel Padre/Madre</h2>
+            <p class="level-subtitle">Evaluación avanzada - 25 preguntas</p>
+          </div>
+          <div class="level-content">
+            <p class="level-description">Examen completo para padres que desean proteger a su familia en el entorno digital.</p>
+            <ul class="level-features">
+              <li>25 preguntas de mayor complejidad</li>
+              <li>Tiempo estimado: 35 minutos</li>
+              <li>Enfoque en seguridad familiar</li>
+              <li>Escenarios prácticos y casos reales</li>
+              <li>Recomendaciones personalizadas</li>
+            </ul>
+          </div>
+          <div class="level-footer">
+            <button class="start-exam-btn" data-level="padre">Comenzar Examen</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botón de volver al inicio (solo flecha) -->
+  <a href="../index.html" class="back-to-home" title="Volver al inicio">
+    ←
+  </a>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
+  </footer>
+
+  <!-- Script para funcionalidad de la página -->
+  <script>
+    // Elementos principales
+    const startButtons = document.querySelectorAll('.start-exam-btn');
+    
+    // Agregar evento click a cada botón de inicio
+    startButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const level = button.getAttribute('data-level');
+        iniciarExamen(level);
+      });
+    });
+    
+    // Función para iniciar el examen
+    // Función para iniciar el examen
+    function iniciarExamen(nivel) {
+        if (nivel === 'estudiante') {
+        window.location.href = 'examen-estudiante.html';
+    }   else if (nivel === 'padre') {
+        window.location.href = 'examen-padre.html';
+    }
+}
+
+    // Script principal: gestión de usuario y menú
+    const brandIcon = document.getElementById('brandIcon');
+    const userMenu = document.getElementById('userMenu');
+    const menuContent = document.getElementById('menuContent');
+    const brandText = document.getElementById('brandText');
+    const brandSub = document.getElementById('brandSub');
+    let usuario = null;
+
+    function getRacha() {
+      return [
+        {dia: 1, emoji: '🌞', activo: true},
+        {dia: 2, emoji: '🔥', activo: true},
+        {dia: 3, emoji: '🔥', activo: true},
+        {dia: 4, emoji: '❌', activo: false},
+        {dia: 5, emoji: '🔥', activo: true},
+        {dia: 6, emoji: '💧', activo: false},
+        {dia: 7, emoji: '🔥', activo: true}
+      ];
+    }
+
+    brandIcon.addEventListener('click', () => {
+      if (userMenu.hidden) {
+        renderMenu();
+        userMenu.hidden = false;
+      } else {
+        userMenu.hidden = true;
+      }
+    });
+
+    document.addEventListener('mousedown', e => {
+      if (!userMenu.contains(e.target) && e.target !== brandIcon) {
+        userMenu.hidden = true;
+      }
+    });
+
+    function renderMenu() {
+      if (!usuario) {
+        menuContent.innerHTML = `
+          <h3>Registro / Login</h3>
+          <input type="text" id="nombreUsuario" placeholder="Nombre de usuario" autocomplete="username" />
+          <button onclick="registrarUsuario()">Registrarse / Iniciar sesión</button>
+        `;
+      } else {
+        const racha = getRacha();
+        menuContent.innerHTML = `
+          <h3>Usuario: <b>@${usuario}</b></h3>
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+          <div class="calendar">
+            ${racha.map(d => `<span title="Día ${d.dia}">${d.emoji}</span>`).join('')}
+          </div>
+          <small style="display:block;margin-top:8px;color:var(--c-muted);">Racha: ${racha.filter(d=>d.emoji==='🔥').length} días</small>
+        `;
+      }
+    }
+
+    window.registrarUsuario = function() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre) {
+        usuario = nombre;
+        brandText.textContent = "Bienvenido,";
+        brandSub.textContent = `@${usuario}`;
+        userMenu.hidden = true;
+      }
+    }
+
+    window.cerrarSesion = function() {
+      usuario = null;
+      brandText.textContent = "CiberShield";
+      brandSub.textContent = "Tu escudo digital.";
+      userMenu.hidden = true;
+    }
+  </script>
+</body>
+</html>

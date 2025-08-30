@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Examen Estudiante • CiberShield</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Ocultar paneles laterales */
+    .side {
+      display: none !important;
+    }
+    
+    /* Ajustar el layout principal */
+    .layout {
+      display: block !important;
+    }
+    
+    .center {
+      width: 100% !important;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Estilos para el examen */
+    .exam-container {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid var(--tile-br);
+      box-shadow: var(--shadow);
+      margin: 20px 0 40px;
+    }
+
+    .exam-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .exam-header h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      margin: 0;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .exam-info {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      color: var(--c-muted);
+      font-size: 0.9rem;
+    }
+
+    .timer {
+      font-weight: bold;
+      color: var(--c-cyan);
+    }
+
+    .progress-container {
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .question-container {
+      margin-bottom: 30px;
+    }
+
+    .question-number {
+      color: var(--c-cyan);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--tile-br);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(98, 160, 255, .45);
+    }
+
+    .option input {
+      margin-right: 12px;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(122,92,255,.3);
+    }
+
+    .nav-btn:disabled {
+      background: var(--c-muted);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .submit-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .submit-btn {
+      padding: 14px 40px;
+      background: linear-gradient(90deg, var(--c-cyan), var(--c-azul));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(32,212,248,.4);
+    }
+
+    /* Modal de resultados */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.95));
+      border-radius: 16px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid var(--tile-br);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--c-muted);
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: var(--c-text);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .result-title {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--c-text);
+    }
+
+    .result-score {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 20px 0;
+      background: linear-gradient(90deg, var(--c-cyan), var(--c-azul));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .result-message {
+      color: var(--c-muted);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .result-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .result-btn {
+      padding: 10px 20px;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .result-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(122,92,255,.3);
+    }
+
+    /* Botón de volver al inicio (solo flecha) */
+    .back-to-home {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--c-azul), var(--c-morado));
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 24px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(122,92,255,.25);
+      z-index: 10;
+    }
+
+    .back-to-home:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(122,92,255,.4);
+    }
+
+    /* Ajuste para dispositivos móviles */
+    @media (max-width: 700px) {
+      .exam-container {
+        padding: 20px;
+      }
+      
+      .back-to-home {
+        left: 15px;
+        bottom: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+      
+      .navigation-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .nav-btn {
+        width: 100%;
+      }
+      
+      .result-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo degradado decorativo -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <!-- Barra superior con marca y búsqueda -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
+      <strong id="brandText">CiberShield</strong>
+      <span id="brandSub">Tu escudo digital.</span>
+    </div>
+    <form class="search" role="search" aria-label="Buscar">
+      <input type="search" placeholder="Buscar…" aria-label="Buscar contenido" />
+      <button type="submit" aria-label="Ejecutar búsqueda">↵</button>
+    </form>
+  </header>
+
+  <!-- Menú de usuario emergente -->
+  <div class="user-menu" id="userMenu" hidden>
+    <div id="menuContent"></div>
+  </div>
+
+  <!-- Layout principal con paneles laterales ocultos -->
+  <main class="layout">
+    <!-- Centro: examen para estudiantes -->
+    <section class="center" aria-labelledby="titulo">
+      <div class="exam-header">
+        <h1>Examen de Seguridad Digital - Nivel Estudiante</h1>
+      </div>
+
+      <div class="exam-info">
+        <div class="timer" id="timer">20:00</div>
+        <div>Pregunta <span id="current-question">1</span> de 15</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar" style="width: 6.66%"></div>
+      </div>
+
+      <div class="exam-container">
+        <form id="exam-form">
+          <!-- Las preguntas se cargarán dinámicamente con JavaScript -->
+          <div class="question-container" id="question-container">
+            <div class="question-number">Pregunta 1</div>
+            <div class="question-text">¿Qué es el phishing?</div>
+            <div class="options-container">
+              <label class="option">
+                <input type="radio" name="answer" value="A">
+                Un método para pescar peces
+              </label>
+              <label class="option">
+                <input type="radio" name="answer" value="B">
+                Un ataque para robar información personal mediante engaño
+              </label>
+              <label class="option">
+                <input type="radio" name="answer" value="C">
+                Un tipo de virus informático
+              </label>
+              <label class="option">
+                <input type="radio" name="answer" value="D">
+                Una aplicación de mensajería
+              </label>
+            </div>
+          </div>
+
+          <div class="navigation-buttons">
+            <button type="button" class="nav-btn" id="prev-btn" disabled>Anterior</button>
+            <button type="button" class="nav-btn" id="next-btn">Siguiente</button>
+          </div>
+
+          <div class="submit-container">
+            <button type="button" class="submit-btn" id="submit-btn" style="display: none;">Finalizar Examen</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de resultados -->
+  <div class="modal" id="result-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">×</button>
+      <div class="result-icon" id="result-icon">🎓</div>
+      <h2 class="result-title" id="result-title">Examen Completado</h2>
+      <div class="result-score" id="result-score">0/15</div>
+      <p class="result-message" id="result-message"></p>
+      <div class="result-actions">
+        <button class="result-btn" id="review-btn">Revisar Respuestas</button>
+        <a href="examen.html" class="result-btn">Volver a Exámenes</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón de volver al inicio (solo flecha) -->
+  <a href="../index.html" class="back-to-home" title="Volver al inicio">
+    ←
+  </a>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
+  </footer>
+
+  <!-- Script para el examen -->
+  <script>
+    // Preguntas del examen para estudiantes
+    const questions = [
+      {
+        question: "¿Qué es el phishing?",
+        options: [
+          "Un método para pescar peces",
+          "Un ataque para robar información personal mediante engaño",
+          "Un tipo de virus informático",
+          "Una aplicación de mensajería"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Cuál de estas es una contraseña segura?",
+        options: [
+          "123456",
+          "password",
+          "C0ntr@s3ñ@S3gur@!",
+          "nombreapellido"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "¿Qué debes hacer si recibes un mensaje de un desconocido pidiendo información personal?",
+        options: [
+          "Responder educadamente",
+          "Proporcionar la información solicitada",
+          "Eliminar el mensaje y no responder",
+          "Reenviar el mensaje a tus amigos"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "¿Por qué es importante actualizar regularmente el software?",
+        options: [
+          "Para tener las últimas funciones",
+          "Para corregir vulnerabilidades de seguridad",
+          "Para que el dispositivo funcione más rápido",
+          "Para liberar espacio de almacenamiento"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es la autenticación de dos factores (2FA)?",
+        options: [
+          "Un método para verificar tu identidad con dos contraseñas",
+          "Un sistema de seguridad que requiere dos formas de verificación",
+          "Una aplicación para duplicar archivos",
+          "Un tipo de virus que afecta a dos sistemas a la vez"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué información personal nunca deberías compartir en redes sociales?",
+        options: [
+          "Tu comida favorita",
+          "Tu dirección, número de teléfono o información financiera",
+          "Tus películas favoritas",
+          "Tu música preferida"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es un VPN y para qué se utiliza?",
+        options: [
+          "Una red virtual para jugar videojuegos",
+          "Una conexión segura y encriptada para proteger tu privacidad en línea",
+          "Un tipo de antivirus",
+          "Una aplicación para hacer videollamadas"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué deberías hacer si encuentras un enlace sospechoso en un correo electrónico?",
+        options: [
+          "Hacer clic en él por curiosidad",
+          "Compartirlo con amigos para advertirles",
+          "No hacer clic y eliminar el correo",
+          "Descargar el archivo adjunto para ver qué es"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "¿Por qué es importante hacer copias de seguridad de tus archivos?",
+        options: [
+          "Para liberar espacio en el dispositivo",
+          "Para proteger tus datos en caso de pérdida o ataque informático",
+          "Para que el dispositivo funcione más rápido",
+          "Para cumplir con regulaciones gubernamentales"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es el malware?",
+        options: [
+          "Un programa para limpiar el ordenador",
+          "Software malicioso diseñado para dañar o infiltrarse en sistemas",
+          "Una aplicación para optimizar el rendimiento",
+          "Un tipo de almacenamiento en la nube"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Cómo puedes identificar un sitio web seguro?",
+        options: [
+          "Tiene muchos colores y animaciones",
+          "Tiene un candado en la barra de direcciones y comienza con https://",
+          "Tiene muchas imágenes y videos",
+          "Tiene publicidad de grandes marcas"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es la ingeniería social?",
+        options: [
+          "Una rama de la sociología",
+          "Manipulación psicológica para que personas revelen información confidencial",
+          "Un método para organizar redes sociales",
+          "Una técnica de programación"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Por qué es importante cerrar sesión en dispositivos públicos?",
+        options: [
+          "Para ahorrar batería",
+          "Para evitar que otros accedan a tus cuentas personales",
+          "Para mejorar la velocidad de internet",
+          "Para liberar memoria RAM"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es el cifrado de datos?",
+        options: [
+          "Un método para comprimir archivos",
+          "Un proceso que convierte información en código para protegerla",
+          "Una forma de organizar archivos en carpetas",
+          "Un tipo de base de datos"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué deberías hacer si tu dispositivo es robado o perdido?",
+        options: [
+          "Nada, esperar a que alguien lo devuelva",
+          "Cambiar inmediatamente las contraseñas de tus cuentas importantes",
+          "Comprar un dispositivo nuevo inmediatamente",
+          "Publicar en redes sociales que lo perdiste"
+        ],
+        correctAnswer: 1
+      }
+    ];
+
+    // Variables del examen
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let timeLeft = 20 * 60; // 20 minutos en segundos
+    let timerInterval;
+
+    // Elementos DOM
+    const timerElement = document.getElementById('timer');
+    const currentQuestionElement = document.getElementById('current-question');
+    const progressBar = document.getElementById('progress-bar');
+    const questionContainer = document.getElementById('question-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const examForm = document.getElementById('exam-form');
+    const resultModal = document.getElementById('result-modal');
+    const resultScore = document.getElementById('result-score');
+    const resultMessage = document.getElementById('result-message');
+    const resultIcon = document.getElementById('result-icon');
+    const resultTitle = document.getElementById('result-title');
+    const modalClose = document.getElementById('modal-close');
+    const reviewBtn = document.getElementById('review-btn');
+
+    // Inicializar el examen
+    function initExam() {
+      loadQuestion(0);
+      startTimer();
+      
+      // Event listeners
+      prevBtn.addEventListener('click', goToPreviousQuestion);
+      nextBtn.addEventListener('click', goToNextQuestion);
+      submitBtn.addEventListener('click', submitExam);
+      modalClose.addEventListener('click', () => resultModal.style.display = 'none');
+      reviewBtn.addEventListener('click', reviewAnswers);
+      
+      // Cerrar modal al hacer clic fuera
+      resultModal.addEventListener('click', (e) => {
+        if (e.target === resultModal) {
+          resultModal.style.display = 'none';
+        }
+      });
+    }
+
+    // Cargar pregunta
+    function loadQuestion(index) {
+      const question = questions[index];
+      
+      questionContainer.innerHTML = `
+        <div class="question-number">Pregunta ${index + 1}</div>
+        <div class="question-text">${question.question}</div>
+        <div class="options-container">
+          ${question.options.map((option, i) => `
+            <label class="option">
+              <input type="radio" name="answer" value="${i}" ${userAnswers[index] === i ? 'checked' : ''}>
+              ${option}
+            </label>
+          `).join('')}
+        </div>
+      `;
+      
+      currentQuestionElement.textContent = index + 1;
+      progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+      
+      // Actualizar estado de los botones
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === questions.length - 1;
+      
+      if (index === questions.length - 1) {
+        submitBtn.style.display = 'block';
+        nextBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
+      }
+      
+      // Guardar respuesta cuando el usuario selecciona una opción
+      const radioButtons = document.querySelectorAll('input[name="answer"]');
+      radioButtons.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          userAnswers[index] = parseInt(e.target.value);
+        });
+      });
+    }
+
+    // Navegación entre preguntas
+    function goToPreviousQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion(currentQuestion);
+      }
+    }
+
+    function goToNextQuestion() {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion(currentQuestion);
+      }
+    }
+
+    // Temporizador
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        
+        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    // Enviar examen
+    function submitExam() {
+      clearInterval(timerInterval);
+      
+      // Calcular puntaje
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        if (userAnswers[i] === questions[i].correctAnswer) {
+          score++;
+        }
+      }
+      
+      // Mostrar resultados
+      resultScore.textContent = `${score}/${questions.length}`;
+      
+      if (score >= 12) {
+        resultIcon.textContent = '🎉';
+        resultTitle.textContent = '¡Excelente!';
+        resultMessage.textContent = 'Has demostrado un gran conocimiento sobre seguridad digital. Sigue practicando para mantener tus habilidades afiladas.';
+      } else if (score >= 8) {
+        resultIcon.textContent = '👍';
+        resultTitle.textContent = '¡Buen trabajo!';
+        resultMessage.textContent = 'Tienes un buen conocimiento base, pero aún hay espacio para mejorar. Sigue aprendiendo sobre seguridad digital.';
+      } else {
+        resultIcon.textContent = '📚';
+        resultTitle.textContent = '¡Sigue aprendiendo!';
+        resultMessage.textContent = 'Es importante seguir educándose sobre seguridad digital. Revisa los conceptos básicos y vuelve a intentarlo.';
+      }
+      
+      resultModal.style.display = 'flex';
+    }
+
+    // Revisar respuestas
+    function reviewAnswers() {
+      resultModal.style.display = 'none';
+      alert('Función de revisión de respuestas en desarrollo. Pronto podrás ver qué preguntas acertaste y cuáles no.');
+    }
+
+    // Inicializar el examen cuando se carga la página
+    document.addEventListener('DOMContentLoaded', initExam);
+
+    // Script principal: gestión de usuario y menú
+    const brandIcon = document.getElementById('brandIcon');
+    const userMenu = document.getElementById('userMenu');
+    const menuContent = document.getElementById('menuContent');
+    const brandText = document.getElementById('brandText');
+    const brandSub = document.getElementById('brandSub');
+    let usuario = null;
+
+    function getRacha() {
+      return [
+        {dia: 1, emoji: '🌞', activo: true},
+        {dia: 2, emoji: '🔥', activo: true},
+        {dia: 3, emoji: '🔥', activo: true},
+        {dia: 4, emoji: '❌', activo: false},
+        {dia: 5, emoji: '🔥', activo: true},
+        {dia: 6, emoji: '💧', activo: false},
+        {dia: 7, emoji: '🔥', activo: true}
+      ];
+    }
+
+    brandIcon.addEventListener('click', () => {
+      if (userMenu.hidden) {
+        renderMenu();
+        userMenu.hidden = false;
+      } else {
+        userMenu.hidden = true;
+      }
+    });
+
+    document.addEventListener('mousedown', e => {
+      if (!userMenu.contains(e.target) && e.target !== brandIcon) {
+        userMenu.hidden = true;
+      }
+    });
+
+    function renderMenu() {
+      if (!usuario) {
+        menuContent.innerHTML = `
+          <h3>Registro / Login</h3>
+          <input type="text" id="nombreUsuario" placeholder="Nombre de usuario" autocomplete="username" />
+          <button onclick="registrarUsuario()">Registrarse / Iniciar sesión</button>
+        `;
+      } else {
+        const racha = getRacha();
+        menuContent.innerHTML = `
+          <h3>Usuario: <b>@${usuario}</b></h3>
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+          <div class="calendar">
+            ${racha.map(d => `<span title="Día ${d.dia}">${d.emoji}</span>`).join('')}
+          </div>
+          <small style="display:block;margin-top:8px;color:var(--c-muted);">Racha: ${racha.filter(d=>d.emoji==='🔥').length} días</small>
+        `;
+      }
+    }
+
+    window.registrarUsuario = function() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre) {
+        usuario = nombre;
+        brandText.textContent = "Bienvenido,";
+        brandSub.textContent = `@${usuario}`;
+        userMenu.hidden = true;
+      }
+    }
+
+    window.cerrarSesion = function() {
+      usuario = null;
+      brandText.textContent = "CiberShield";
+      brandSub.textContent = "Tu escudo digital.";
+      userMenu.hidden = true;
+    }
+  </script>
+</body>
+</html>

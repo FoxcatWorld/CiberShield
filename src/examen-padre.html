@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Examen Padre • CiberShield</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Ocultar paneles laterales */
+    .side {
+      display: none !important;
+    }
+    
+    /* Ajustar el layout principal */
+    .layout {
+      display: block !important;
+    }
+    
+    .center {
+      width: 100% !important;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Estilos para el examen */
+    .exam-container {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid var(--tile-br);
+      box-shadow: var(--shadow);
+      margin: 20px 0 40px;
+    }
+
+    .exam-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .exam-header h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      margin: 0;
+      background: linear-gradient(90deg, var(--c-morado), var(--c-purp));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .exam-info {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      color: var(--c-muted);
+      font-size: 0.9rem;
+    }
+
+    .timer {
+      font-weight: bold;
+      color: var(--c-cyan);
+    }
+
+    .progress-container {
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--c-morado), var(--c-purp));
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .question-container {
+      margin-bottom: 30px;
+    }
+
+    .question-number {
+      color: var(--c-cyan);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--tile-br);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(98, 160, 255, .45);
+    }
+
+    .option input {
+      margin-right: 12px;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      background: linear-gradient(90deg, var(--c-morado), var(--c-purp));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(122,92,255,.3);
+    }
+
+    .nav-btn:disabled {
+      background: var(--c-muted);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .submit-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .submit-btn {
+      padding: 14px 40px;
+      background: linear-gradient(90deg, var(--c-purp), var(--c-morado));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(179,77,255,.4);
+    }
+
+    /* Modal de resultados */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.95));
+      border-radius: 16px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid var(--tile-br);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--c-muted);
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: var(--c-text);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .result-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .result-title {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--c-text);
+    }
+
+    .result-score {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 20px 0;
+      background: linear-gradient(90deg, var(--c-purp), var(--c-morado));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .result-message {
+      color: var(--c-muted);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .result-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .result-btn {
+      padding: 10px 20px;
+      background: linear-gradient(90deg, var(--c-morado), var(--c-purp));
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .result-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(122,92,255,.3);
+    }
+
+    /* Botón de volver al inicio (solo flecha) */
+    .back-to-home {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--c-morado), var(--c-purp));
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 24px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(122,92,255,.25);
+      z-index: 10;
+    }
+
+    .back-to-home:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(122,92,255,.4);
+    }
+
+    /* Ajuste para dispositivos móviles */
+    @media (max-width: 700px) {
+      .exam-container {
+        padding: 20px;
+      }
+      
+      .back-to-home {
+        left: 15px;
+        bottom: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+      
+      .navigation-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .nav-btn {
+        width: 100%;
+      }
+      
+      .result-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo degradado decorativo -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <!-- Barra superior con marca y búsqueda -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
+      <strong id="brandText">CiberShield</strong>
+      <span id="brandSub">Tu escudo digital.</span>
+    </div>
+    <form class="search" role="search" aria-label="Buscar">
+      <input type="search" placeholder="Buscar…" aria-label="Buscar contenido" />
+      <button type="submit" aria-label="Ejecutar búsqueda">↵</button>
+    </form>
+  </header>
+
+  <!-- Menú de usuario emergente -->
+  <div class="user-menu" id="userMenu" hidden>
+    <div id="menuContent"></div>
+  </div>
+
+  <!-- Layout principal con paneles laterales ocultos -->
+  <main class="layout">
+    <!-- Centro: examen para padres -->
+    <section class="center" aria-labelledby="titulo">
+      <div class="exam-header">
+        <h1>Examen de Seguridad Digital - Nivel Padre/Madre</h1>
+      </div>
+
+      <div class="exam-info">
+        <div class="timer" id="timer">35:00</div>
+        <div>Pregunta <span id="current-question">1</span> de 25</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar" style="width: 4%"></div>
+      </div>
+
+      <div class="exam-container">
+        <form id="exam-form">
+          <!-- Las preguntas se cargarán dinámicamente con JavaScript -->
+          <div class="question-container" id="question-container">
+            <div class="question-number">Pregunta 1</div>
+            <div class="question-text">¿Qué medidas debe tomar para proteger la privacidad de sus hijos en línea?</div>
+            <div class="options-container">
+              <label class="option">
+                <input type="radio" name="answer" value="A">
+                Limitar el acceso a internet completamente
+              </label>
+              <label class="option">
+                <input type="radio" name="answer" value="B">
+                Establecer controles parentales y mantener comunicación abierta sobre los riesgos
+              </label>
+              <label class="option">
+                <input type="radio" name="answer" value="C">
+                Revisar todos sus mensajes personales sin su conocimiento
+              </label>
+              <label class="option">
+                <input type="radio" name="answer" value="D">
+                Permitirles usar cualquier aplicación que deseen
+              </label>
+            </div>
+          </div>
+
+          <div class="navigation-buttons">
+            <button type="button" class="nav-btn" id="prev-btn" disabled>Anterior</button>
+            <button type="button" class="nav-btn" id="next-btn">Siguiente</button>
+          </div>
+
+          <div class="submit-container">
+            <button type="button" class="submit-btn" id="submit-btn" style="display: none;">Finalizar Examen</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de resultados -->
+  <div class="modal" id="result-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">×</button>
+      <div class="result-icon" id="result-icon">👨‍👩‍👧‍👦</div>
+      <h2 class="result-title" id="result-title">Examen Completado</h2>
+      <div class="result-score" id="result-score">0/25</div>
+      <p class="result-message" id="result-message"></p>
+      <div class="result-actions">
+        <button class="result-btn" id="review-btn">Revisar Respuestas</button>
+        <a href="examen.html" class="result-btn">Volver a Exámenes</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón de volver al inicio (solo flecha) -->
+  <a href="../index.html" class="back-to-home" title="Volver al inicio">
+    ←
+  </a>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
+  </footer>
+
+  <!-- Script para el examen -->
+  <script>
+    // Preguntas del examen para padres
+    const questions = [
+      {
+        question: "¿Qué medidas debe tomar para proteger la privacidad de sus hijos en línea?",
+        options: [
+          "Limitar el acceso a internet completamente",
+          "Establecer controles parentales y mantener comunicación abierta sobre los riesgos",
+          "Revisar todos sus mensajes personales sin su conocimiento",
+          "Permitirles usar cualquier aplicación que deseen"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿A qué edad considera apropiado que un niño tenga su primer smartphone?",
+        options: [
+          "A los 6-7 años, para mantenerse en contacto",
+          "A los 10-12 años, con supervisión y límites claros",
+          "A los 15-16 años, cuando sean más responsables",
+          "Cuando todos sus amigos tengan uno"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Cómo debe abordar el tema del cyberbullying con sus hijos?",
+        options: [
+          "Evitar el tema para no preocuparlos",
+          "Hablar abiertamente sobre ello, enseñándoles a identificarlo y reportarlo",
+          "Decirles que ignoren cualquier comentario negativo en línea",
+          "Limitar su acceso a redes sociales completamente"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es el 'sharenting' y por qué puede ser problemático?",
+        options: [
+          "Compartir en exceso información sobre los hijos en redes sociales, lo que puede comprometer su privacidad",
+          "Compartir consejos de crianza en foros en línea",
+          "Permitir que los hijos usen las redes sociales de los padres",
+          "Una aplicación para control parental"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Qué debe hacer si descubre que su hijo ha estado chateando con un desconocido en línea?",
+        options: [
+          "Castigarlo severamente y quitarle todos los dispositivos",
+          "Mantener la calma, hablar con él sobre los peligros y establecer reglas más claras",
+          "Ignorarlo, es normal que los niños exploren",
+          "Contactar inmediatamente a la policía"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué información nunca debe compartir sobre sus hijos en redes sociales?",
+        options: [
+          "Cualquier información que pueda identificar su ubicación o rutina",
+          "Solo fotos en traje de baño",
+          "Logros escolares y deportivos",
+          "Fotos de familia en eventos especiales"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Qué signos podrían indicar que su hijo está siendo víctima de cyberbullying?",
+        options: [
+          "Cambios repentinos en el comportamiento o estado de ánimo después de usar dispositivos",
+          "Pasar más tiempo estudiando",
+          "Pedir un teléfono nuevo",
+          "Querer tomar clases de defensa personal"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Cómo puede enseñar a sus hijos a crear contraseñas seguras?",
+        options: [
+          "Usando combinaciones de letras, números y símbolos, y diferentes para cada cuenta",
+          "Usando su nombre y fecha de nacimiento",
+          "Usando la misma contraseña para todas las cuentas",
+          "Escribiendo las contraseñas en un cuaderno para no olvidarlas"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Qué deben saber los niños sobre compartir fotos en línea?",
+        options: [
+          "Que una vez compartidas, pierden control sobre ellas y podrían ser usadas en su contra",
+          "Que solo deben compartir fotos con amigos cercanos",
+          "Que las fotos se eliminan automáticamente después de un tiempo",
+          "Que está bien compartir fotos con cualquier persona que pida amistad"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Qué es el 'grooming' y cómo puede prevenirlo?",
+        options: [
+          "Cuando un adulto se hace pasar por un niño para ganarse la confianza de un menor, se previene con educación sobre los peligros en línea",
+          "Una técnica para mejorar el rendimiento académico",
+          "Una aplicación de citas para adolescentes",
+          "Un tipo de virus informático"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Cómo establecer un equilibrio saludable en el uso de pantallas?",
+        options: [
+          "Prohibir completamente los dispositivos durante la semana",
+          "Establecer límites de tiempo y promover actividades offline",
+          "Permitir uso ilimitado los fines de semana",
+          "Dejar que los hijos decidan cuándo desconectarse"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué debe hacer si su hijo recibe un mensaje inapropiado?",
+        options: [
+          "Eliminar el mensaje y olvidar el incidente",
+          "Guardar evidencia, bloquear al remitente y reportar el incidente",
+          "Contestar el mensaje para avergonzar al remitente",
+          "Compartir el mensaje en redes sociales para alertar a otros"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Por qué es importante actualizar regularmente el software de control parental?",
+        options: [
+          "Para tener las últimas funciones de entretenimiento",
+          "Para asegurar que las medidas de protección estén actualizadas contra nuevas amenazas",
+          "Para que los dispositivos funcionen más rápido",
+          "Para cumplir con requisitos legales"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es la 'huella digital' y por qué es importante?",
+        options: [
+          "El registro permanente de toda la actividad en línea de una persona, que puede afectar su futuro",
+          "Un sistema de identificación por huellas dactilares en dispositivos",
+          "Una aplicación para rastrear dispositivos perdidos",
+          "Un tipo de virus que afecta la privacidad"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Cómo hablar con adolescentes sobre privacidad en redes sociales?",
+        options: [
+          "Evitar el tema para no invadir su privacidad",
+          "Mantener conversaciones abiertas sobre configuraciones de privacidad y consecuencias de compartir en exceso",
+          "Exigirles las contraseñas de todas sus cuentas",
+          "Crear perfiles falsos para monitorear su actividad"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué hacer si descubre que su hijo ha descargado una aplicación potencialmente peligrosa?",
+        options: [
+          "Eliminar la aplicación inmediatamente sin explicaciones",
+          "Hablar sobre los riesgos de la aplicación y juntos decidir si debe eliminarse",
+          "Permitir que continue usándola bajo supervisión estricta",
+          "Descargar la aplicación usted también para entenderla mejor"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Cómo enseñar a los niños a identificar noticias falsas?",
+        options: [
+          "Prohibirles leer noticias en línea",
+          "Enseñarles a verificar fuentes y cuestionar la información sensacionalista",
+          "Decirles que crean todo lo que ven en medios oficiales",
+          "Limitar su acceso a sitios de noticias"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué precauciones tomar con los dispositivos IoT (Internet de las Cosas) en el hogar?",
+        options: [
+          "No usar ningún dispositivo IoT por razones de seguridad",
+          "Cambiar contraseñas predeterminadas y mantener el firmware actualizado",
+          "Conectar todos los dispositivos a la misma red para facilidad de uso",
+          "Compartir el acceso con familiares cercanos"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Por qué es importante que los padres también sigan las reglas de uso de dispositivos?",
+        options: [
+          "Para dar el ejemplo y demostrar que las reglas aplican para todos",
+          "Para ahorrar batería en sus propios dispositivos",
+          "Porque los niños insisten en que lo hagan",
+          "Para tener más control sobre el uso familiar de tecnología"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Qué hacer si su hijo comete un error en línea (como compartir información personal)?",
+        options: [
+          "Castigarlo severamente para que no repita el error",
+          "Usarlo como oportunidad de aprendizaje y ayudarlo a solucionar cualquier problema resultante",
+          "Ignorarlo, todos cometemos errores",
+          "Limitar su acceso a internet permanentemente"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Cómo manejar el uso de videojuegos y contenido en línea apropiado para la edad?",
+        options: [
+          "Prohibir todos los videojuegos por ser violentos",
+          "Revisar clasificaciones de edad y contenido antes de permitir su uso",
+          "Permitir cualquier juego que esté de moda",
+          "Dejar que los hijos decidan qué juegos usar"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Qué es el 'phishing' familiar y cómo prevenirlo?",
+        options: [
+          "Cuando hackers se hacen pasar por familiares para obtener información, se previene verificando identidades por otro medio",
+          "Una técnica para pescar con la familia",
+          "Un juego en línea popular entre familias",
+          "Una aplicación para compartir fotos familiares"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Cómo crear un plan familiar de seguridad digital?",
+        options: [
+          "Establecer reglas claras, consecuencias por infringirlas y mantener conversaciones periódicas sobre seguridad",
+          "Dejar que cada miembro de la familia decida sus propias reglas",
+          "Contratar a un experto en seguridad para que monitoree toda la actividad familiar",
+          "Usar la misma contraseña para todas las cuentas familiares"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "¿Qué recursos puede utilizar para educarse sobre nuevas amenazas digitales?",
+        options: [
+          "Solo confiar en su intuición",
+          "Sitios web oficiales de ciberseguridad, blogs especializados y organizaciones de protección al menor",
+          "Redes sociales y comentarios de otros padres",
+          " Esperar a que la escuela eduque a sus hijos"
+        ],
+        correctAnswer: 1
+      },
+      {
+        question: "¿Por qué es importante que los niños tengan espacios libres de tecnología?",
+        options: [
+          "Para fomentar la creatividad, interacción social cara a cara y un desarrollo equilibrado",
+          "Para ahorrar en la factura de internet",
+          "Porque los dispositivos emiten radiación dañina",
+          "Para que los padres puedan usar los dispositivos sin interrupciones"
+        ],
+        correctAnswer: 0
+      }
+    ];
+
+    // Variables del examen
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let timeLeft = 35 * 60; // 35 minutos en segundos
+    let timerInterval;
+
+    // Elementos DOM
+    const timerElement = document.getElementById('timer');
+    const currentQuestionElement = document.getElementById('current-question');
+    const progressBar = document.getElementById('progress-bar');
+    const questionContainer = document.getElementById('question-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const examForm = document.getElementById('exam-form');
+    const resultModal = document.getElementById('result-modal');
+    const resultScore = document.getElementById('result-score');
+    const resultMessage = document.getElementById('result-message');
+    const resultIcon = document.getElementById('result-icon');
+    const resultTitle = document.getElementById('result-title');
+    const modalClose = document.getElementById('modal-close');
+    const reviewBtn = document.getElementById('review-btn');
+
+    // Inicializar el examen
+    function initExam() {
+      loadQuestion(0);
+      startTimer();
+      
+      // Event listeners
+      prevBtn.addEventListener('click', goToPreviousQuestion);
+      nextBtn.addEventListener('click', goToNextQuestion);
+      submitBtn.addEventListener('click', submitExam);
+      modalClose.addEventListener('click', () => resultModal.style.display = 'none');
+      reviewBtn.addEventListener('click', reviewAnswers);
+      
+      // Cerrar modal al hacer clic fuera
+      resultModal.addEventListener('click', (e) => {
+        if (e.target === resultModal) {
+          resultModal.style.display = 'none';
+        }
+      });
+    }
+
+    // Cargar pregunta
+    function loadQuestion(index) {
+      const question = questions[index];
+      
+      questionContainer.innerHTML = `
+        <div class="question-number">Pregunta ${index + 1}</div>
+        <div class="question-text">${question.question}</div>
+        <div class="options-container">
+          ${question.options.map((option, i) => `
+            <label class="option">
+              <input type="radio" name="answer" value="${i}" ${userAnswers[index] === i ? 'checked' : ''}>
+              ${option}
+            </label>
+          `).join('')}
+        </div>
+      `;
+      
+      currentQuestionElement.textContent = index + 1;
+      progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+      
+      // Actualizar estado de los botones
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === questions.length - 1;
+      
+      if (index === questions.length - 1) {
+        submitBtn.style.display = 'block';
+        nextBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
+      }
+      
+      // Guardar respuesta cuando el usuario selecciona una opción
+      const radioButtons = document.querySelectorAll('input[name="answer"]');
+      radioButtons.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          userAnswers[index] = parseInt(e.target.value);
+        });
+      });
+    }
+
+    // Navegación entre preguntas
+    function goToPreviousQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion(currentQuestion);
+      }
+    }
+
+    function goToNextQuestion() {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion(currentQuestion);
+      }
+    }
+
+    // Temporizador
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        
+        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    // Enviar examen
+    function submitExam() {
+      clearInterval(timerInterval);
+      
+      // Calcular puntaje
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        if (userAnswers[i] === questions[i].correctAnswer) {
+          score++;
+        }
+      }
+      
+      // Mostrar resultados
+      resultScore.textContent = `${score}/${questions.length}`;
+      
+      if (score >= 20) {
+        resultIcon.textContent = '🎉';
+        resultTitle.textContent = '¡Excelente!';
+        resultMessage.textContent = 'Tienes un conocimiento excepcional sobre seguridad digital familiar. ¡Sigue siendo un ejemplo para tus hijos!';
+      } else if (score >= 15) {
+        resultIcon.textContent = '👍';
+        resultTitle.textContent = '¡Buen trabajo!';
+        resultMessage.textContent = 'Tienes un buen conocimiento sobre protección digital familiar. Hay algunos aspectos que puedes mejorar.';
+      } else {
+        resultIcon.textContent = '📚';
+        resultTitle.textContent = '¡Sigue aprendiendo!';
+        resultMessage.textContent = 'La seguridad digital familiar es importante. Te recomendamos seguir educándote sobre este tema para proteger mejor a tu familia.';
+      }
+      
+      resultModal.style.display = 'flex';
+    }
+
+    // Revisar respuestas
+    function reviewAnswers() {
+      resultModal.style.display = 'none';
+      alert('Función de revisión de respuestas en desarrollo. Pronto podrás ver qué preguntas acertaste y cuáles no.');
+    }
+
+    // Inicializar el examen cuando se carga la página
+    document.addEventListener('DOMContentLoaded', initExam);
+
+    // Script principal: gestión de usuario y menú
+    const brandIcon = document.getElementById('brandIcon');
+    const userMenu = document.getElementById('userMenu');
+    const menuContent = document.getElementById('menuContent');
+    const brandText = document.getElementById('brandText');
+    const brandSub = document.getElementById('brandSub');
+    let usuario = null;
+
+    function getRacha() {
+      return [
+        {dia: 1, emoji: '🌞', activo: true},
+        {dia: 2, emoji: '🔥', activo: true},
+        {dia: 3, emoji: '🔥', activo: true},
+        {dia: 4, emoji: '❌', activo: false},
+        {dia: 5, emoji: '🔥', activo: true},
+        {dia: 6, emoji: '💧', activo: false},
+        {dia: 7, emoji: '🔥', activo: true}
+      ];
+    }
+
+    brandIcon.addEventListener('click', () => {
+      if (userMenu.hidden) {
+        renderMenu();
+        userMenu.hidden = false;
+      } else {
+        userMenu.hidden = true;
+      }
+    });
+
+    document.addEventListener('mousedown', e => {
+      if (!userMenu.contains(e.target) && e.target !== brandIcon) {
+        userMenu.hidden = true;
+      }
+    });
+
+    function renderMenu() {
+      if (!usuario) {
+        menuContent.innerHTML = `
+          <h3>Registro / Login</h3>
+          <input type="text" id="nombreUsuario" placeholder="Nombre de usuario" autocomplete="username" />
+          <button onclick="registrarUsuario()">Registrarse / Iniciar sesión</button>
+        `;
+      } else {
+        const racha = getRacha();
+        menuContent.innerHTML = `
+          <h3>Usuario: <b>@${usuario}</b></h3>
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+          <div class="calendar">
+            ${racha.map(d => `<span title="Día ${d.dia}">${d.emoji}</span>`).join('')}
+          </div>
+          <small style="display:block;margin-top:8px;color:var(--c-muted);">Racha: ${racha.filter(d=>d.emoji==='🔥').length} días</small>
+        `;
+      }
+    }
+
+    window.registrarUsuario = function() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre) {
+        usuario = nombre;
+        brandText.textContent = "Bienvenido,";
+        brandSub.textContent = `@${usuario}`;
+        userMenu.hidden = true;
+      }
+    }
+
+    window.cerrarSesion = function() {
+      usuario = null;
+      brandText.textContent = "CiberShield";
+      brandSub.textContent = "Tu escudo digital.";
+      userMenu.hidden = true;
+    }
+  </script>
+</body>
+</html>
