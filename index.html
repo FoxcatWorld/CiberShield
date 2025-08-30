@@ -29,27 +29,80 @@
     <div id="menuContent"></div>
   </div>
 
-  <!-- Layout principal con paneles laterales y centro -->
-  <main class="layout">
-    <!-- Panel izquierdo: categorías -->
-    <nav class="side left" aria-label="Categorías izquierda">
-      <a class="tile" href="src/proximamente.html" role="button">
+  <!-- Overlay para menú móvil -->
+  <div class="overlay" id="menuOverlay" hidden></div>
+
+  <!-- Menú de navegación lateral desplegable para móvil -->
+  <nav class="mobile-nav" id="mobileNav" hidden>
+    <button class="close-menu" id="closeMenu" aria-label="Cerrar menú de navegación">✕</button>
+    <div class="mobile-nav-content">
+      <a id="PaisRegiones-mobile" class="tile" href="src/proximamente.html" role="button">
         <span class="ico earth" aria-hidden="true"></span>
         <span class="txt">Paisajes y regiones</span>
       </a>
-      <a class="tile" href="src/proximamente.html" role="button">
+      <a id="SeguridadOnline-mobile" class="tile" href="src/proximamente.html" role="button">
         <span class="ico tiger" aria-hidden="true"></span>
         <span class="txt">Seguridad Online</span>
       </a>
-      <a class="tile" href="src/juegos.html" role="button">
+      <a id="Juegos-mobile" class="tile" href="src/juegos.html" role="button">
         <span class="ico lab" aria-hidden="true"></span>
         <span class="txt">Juegos</span>
       </a>
-      <a class="tile" href="src/proximamente.html" role="button">
+      <a id="Articulos-mobile" class="tile" href="src/proximamente.html" role="button">
         <span class="ico abacus" aria-hidden="true"></span>
         <span class="txt">Articulos</span>
       </a>
-      <a class="tile" href="src/proximamente.html" role="button">
+      <a id="Recomendaciones-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico ball" aria-hidden="true"></span>
+        <span class="txt">Recomendaciones</span>
+      </a>
+      <a id="MinTic-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pharaoh" aria-hidden="true"></span>
+        <span class="txt">MinTic</span>
+      </a>
+      <a id="Downloads-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico people" aria-hidden="true"></span>
+        <span class="txt">Downloads</span>
+      </a>
+      <a id="Referencias-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pen" aria-hidden="true"></span>
+        <span class="txt">Referencias</span>
+      </a>
+      <a id="Examen-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico palette" aria-hidden="true"></span>
+        <span class="txt">Examen</span>
+      </a>
+      <a id="Racha-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico puzzle" aria-hidden="true"></span>
+        <span class="txt">Racha</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Floating Action Button para abrir el menú móvil -->
+  <button class="fab-menu-toggle" id="fabMenuToggle" aria-label="Abrir menú de navegación" hidden>☰</button>
+
+  <!-- Layout principal con paneles laterales y centro -->
+  <main class="layout">
+    <!-- Panel izquierdo: categorías (oculto en móvil, ahora en mobile-nav) -->
+    <nav class="side left" aria-label="Categorías izquierda">
+      <a id="PaisRegiones-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico earth" aria-hidden="true"></span>
+        <span class="txt">Paisajes y regiones</span>
+      </a>
+      <a id="SeguridadOnline-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico tiger" aria-hidden="true"></span>
+        <span class="txt">Seguridad Online</span>
+      </a>
+      <a id="Juegos-desktop" class="tile" href="src/juegos.html" role="button">
+        <span class="ico lab" aria-hidden="true"></span>
+        <span class="txt">Juegos</span>
+      </a>
+      <a id="Articulos-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico abacus" aria-hidden="true"></span>
+        <span class="txt">Articulos</span>
+      </a>
+      <a id="Recomendaciones-desktop" class="tile" href="src/proximamente.html" role="button">
         <span class="ico ball" aria-hidden="true"></span>
         <span class="txt">Recomendaciones</span>
       </a>
@@ -80,28 +133,28 @@
         <button type="submit">Enviar</button>
       </form>
 
-      <p class="tagline">IA lista para ayudarte — versión educativa</p>
+      <p class="tagline">La IA aún no está disponible, ¡pero lo estará pronto!</p>
     </section>
 
-    <!-- Panel derecho: categorías -->
+    <!-- Panel derecho: categorías (oculto en móvil, ahora en mobile-nav) -->
     <nav class="side right" aria-label="Categorías derecha">
-      <a class="tile" href="src/proximamente.html" role="button">
+      <a id="MinTic-desktop" class="tile" href="src/proximamente.html" role="button">
         <span class="ico pharaoh" aria-hidden="true"></span>
         <span class="txt">MinTic</span>
       </a>
-      <a class="tile" href="src/downloads.html" role="button">
+      <a id="Downloads-desktop" class="tile" href="src/downloads.html" role="button">
         <span class="ico people" aria-hidden="true"></span>
         <span class="txt">Downloads</span>
       </a>
-      <a class="tile" href="src/proximamente.html" role="button">
+      <a id="Referencias-desktop" class="tile" href="src/proximamente.html" role="button">
         <span class="ico pen" aria-hidden="true"></span>
         <span class="txt">Referencias</span>
       </a>
-      <a class="tile" href="src/examen.html" role="button">
+      <a id="Examen-desktop" class="tile" href="src/examen.html" role="button">
         <span class="ico palette" aria-hidden="true"></span>
         <span class="txt">Examen</span>
       </a>
-      <a class="tile" href="src/proximamente.html" role="button">
+      <a id="Racha-desktop" class="tile" href="src/proximamente.html" role="button">
         <span class="ico puzzle" aria-hidden="true"></span>
         <span class="txt">Racha</span>
       </a>
@@ -116,6 +169,6 @@
   <!-- Scripts -->
   <script type="module" src="src/Firebase.js"></script>
   <script src="src/ui.js"></script>
-  <script src="src/main.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>

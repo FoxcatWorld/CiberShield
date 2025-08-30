@@ -36,18 +36,25 @@
   box-sizing: border-box;
 }
 
-html, body {
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Previene el desbordamiento horizontal */
-}
-
-body {
   font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif;
   color: var(--c-text);
   background: var(--bg-0);
+
+  /* Flexbox para Sticky Footer */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* =================================================================================
@@ -148,6 +155,7 @@ body {
   gap: 1rem;
   padding: clamp(12px, 2vw, 24px);
   width: 100%;
+  flex: 1; /* Permite que el layout principal ocupe el espacio restante */
 }
 
 /* En pantallas más grandes, usamos un layout de 3 columnas */
@@ -531,6 +539,115 @@ body {
 }
 
 /* =================================================================================
+   Menú de navegación lateral (Móvil)
+   ================================================================================= */
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Start off-screen */
+  width: 300px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-0) 90%); /* Similar to page bg */
+  box-shadow: -4px 0 20px rgba(0, 0, 0, .3);
+  z-index: 100;
+  transition: right .3s ease-out;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-left: 1px solid var(--tile-br);
+}
+
+.mobile-nav.open {
+  right: 0;
+}
+
+.mobile-nav .close-menu {
+  background: none;
+  border: none;
+  color: var(--c-text);
+  font-size: 1.8rem;
+  cursor: pointer;
+  align-self: flex-end;
+  padding: .5rem;
+}
+
+.mobile-nav-content {
+  display: grid;
+  gap: clamp(10px, 1.5vw, 16px);
+  margin-top: 1rem;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for mobile-nav-content */
+.mobile-nav-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mobile-nav-content::-webkit-scrollbar-track {
+  background: var(--bg-0);
+  border-radius: 10px;
+}
+
+.mobile-nav-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--c-azul), var(--c-morado));
+  border-radius: 10px;
+}
+
+.mobile-nav-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--c-morado), var(--c-azul));
+}
+
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: 90;
+  backdrop-filter: blur(2px);
+}
+
+/* =================================================================================
+   Floating Action Button (FAB) para el menú móvil
+   ================================================================================= */
+.fab-menu-toggle {
+  display: none; /* Hidden by default, explicitly set to none */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-azul), var(--c-purp));
+  color: white;
+  font-size: 1.8rem;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .4);
+  cursor: grab;
+  z-index: 95;
+  place-items: center;
+  transition: background .3s ease;
+}
+
+.fab-menu-toggle:active {
+  cursor: grabbing;
+}
+
+.fab-menu-toggle:hover {
+  background: linear-gradient(135deg, var(--c-purp), var(--c-azul));
+}
+
+/* =================================================================================
+   Footer
+   ================================================================================= */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  color: var(--c-muted);
+  margin-top: auto; /* Pushes the footer to the bottom */
+}
+
+/* =================================================================================
    Media Queries para Responsividad
    ================================================================================= */
 
@@ -543,7 +660,8 @@ body {
 
 /* Para pantallas de menos de 768px (tablets y móviles) */
 @media (max-width: 767px) {
-  .side.right, .side.left {
+  .side.right,
+  .side.left {
     display: none; /* Ocultamos los paneles laterales en pantallas pequeñas */
   }
   
@@ -551,33 +669,46 @@ body {
     grid-template-columns: 1fr; /* Una sola columna */
   }
 
+  .search {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
   .search input {
-    width: 40vw;
+    width: min(60vw, 300px);
+  }
+
+  .fab-menu-toggle {
+    display: grid; /* Muestra el FAB en pantallas pequeñas */
+  }
+
+  .topbar {
+    justify-content: space-between;
+  }
+
+  .topbar .search {
+    margin-left: 0;
   }
 }
 
 /* Para pantallas de menos de 480px (móviles pequeños) */
 @media (max-width: 479px) {
   .topbar {
-    flex-direction: column;
+    flex-direction: row; /* Keep row direction for better menu toggle placement */
     gap: .5rem;
     padding: .5rem;
-  }
-
-  .search {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .search input {
-    width: 100%;
+    justify-content: space-between;
   }
 
   .brand {
-    width: 100%;
+    width: auto;
   }
 
-  .games-gallery {
-    padding: 0.5rem;
+  .search {
+    display: none; /* Hide search bar on very small screens for space */
+  }
+
+  .mobile-nav {
+    width: 250px;
   }
 }

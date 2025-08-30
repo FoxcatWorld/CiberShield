@@ -109,9 +109,13 @@ window.cerrarSesion = function() {
 document.addEventListener('DOMContentLoaded', () => {
   const brandIcon = document.getElementById('brandIcon');
   const userMenu = document.getElementById('userMenu');
+  const fabMenuToggle = document.getElementById('fabMenuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  const closeMenu = document.getElementById('closeMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
 
   if (brandIcon && userMenu) {
-    // Muestra/oculta el menú
+    // Muestra/oculta el menú de usuario
     brandIcon.addEventListener('click', () => {
       if (userMenu.hidden) {
         renderMenu();
@@ -121,11 +125,99 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Cierra el menú al hacer clic fuera
+    // Cierra el menú de usuario al hacer clic fuera
     document.addEventListener('mousedown', e => {
       if (!userMenu.contains(e.target) && e.target !== brandIcon) {
         userMenu.hidden = true;
       }
     });
+  }
+
+  // Handle mobile navigation toggle and FAB drag functionality
+  if (fabMenuToggle && mobileNav && closeMenu && menuOverlay) {
+    let isDragging = false;
+    let isClick = true; // Assume it's a click initially
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+    const dragThreshold = 5; // Pixels to distinguish a drag from a click
+
+    // FAB drag functionality
+    fabMenuToggle.addEventListener("mousedown", (e) => {
+      initialX = e.clientX;
+      initialY = e.clientY;
+      isClick = true; // Assume it's a click until proven otherwise
+
+      if (e.target === fabMenuToggle) {
+        isDragging = true;
+      }
+    });
+
+    document.addEventListener("mouseup", (e) => {
+      if (isDragging) {
+        isDragging = false; // End dragging
+      }
+
+      if (isClick && e.target === fabMenuToggle) {
+        // Only toggle menu if it was a click (no significant drag) and the FAB was clicked
+        mobileNav.classList.toggle('open');
+        mobileNav.hidden = !mobileNav.hidden;
+        menuOverlay.hidden = !menuOverlay.hidden;
+      }
+      // Reset isClick for the next interaction
+      isClick = true;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const dx = e.clientX - initialX;
+      const dy = e.clientY - initialY;
+
+      // If movement exceeds threshold, it's a drag, not a click
+      if (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold) {
+        isClick = false;
+      }
+
+      // Calculate new position relative to initial drag start and current offset
+      const newX = e.clientX - initialX + xOffset;
+      const newY = e.clientY - initialY + yOffset;
+
+      // Limit FAB to stay within the viewport
+      const maxX = window.innerWidth - fabMenuToggle.offsetWidth;
+      const maxY = window.innerHeight - fabMenuToggle.offsetHeight;
+
+      fabMenuToggle.style.left = `${Math.min(maxX, Math.max(0, newX))}px`;
+      fabMenuToggle.style.top = `${Math.min(maxY, Math.max(0, newY))}px`;
+
+      // Update offsets for continuous dragging
+      xOffset = newX;
+      yOffset = newY;
+
+      initialX = e.clientX; // Update initialX/Y to current mouse position for smoother drag
+      initialY = e.clientY;
+    });
+
+    // Close mobile menu
+    closeMenu.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent click from bubbling to overlay
+      mobileNav.classList.remove('open');
+      mobileNav.hidden = true;
+      menuOverlay.hidden = true;
+    });
+
+    // Close mobile menu when overlay is clicked
+    menuOverlay.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      mobileNav.hidden = true;
+      menuOverlay.hidden = true;
+    });
+
+    // Prevent text selection during drag
+    fabMenuToggle.ondragstart = function() {
+      return false;
+    };
   }
 });
