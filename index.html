@@ -44,7 +44,11 @@
         <span class="ico tiger" aria-hidden="true"></span>
         <span class="txt">Seguridad Online</span>
       </a>
+<<<<<<< HEAD
       <a id="Juegos-mobile" class="tile" href="src/juegos.html" role="button">
+=======
+      <a class="tile" href="src/juegos.html" role="button">
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
         <span class="ico lab" aria-hidden="true"></span>
         <span class="txt">Juegos</span>
       </a>
@@ -166,9 +170,176 @@
     <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
   </footer>
 
+<<<<<<< HEAD
   <!-- Scripts -->
   <script type="module" src="src/Firebase.js"></script>
   <script src="src/ui.js"></script>
   <script type="module" src="src/main.js"></script>
+=======
+  <!-- Script principal: gestión de usuario y menú -->
+  <script>
+    // Elementos principales
+    const brandIcon = document.getElementById('brandIcon');
+    const userMenu = document.getElementById('userMenu');
+    const menuContent = document.getElementById('menuContent');
+    const brandText = document.getElementById('brandText');
+    const brandSub = document.getElementById('brandSub');
+    let usuario = null; // Usuario actual (null si no hay usuario)
+
+    // Mostrar/ocultar menú de usuario
+    brandIcon.addEventListener('click', () => {
+      if (userMenu.hidden) {
+        renderMenu();
+        userMenu.hidden = false;
+      } else {
+        userMenu.hidden = true;
+      }
+    });
+
+    // Cerrar menú al hacer click fuera
+    document.addEventListener('mousedown', e => {
+      if (!userMenu.contains(e.target) && e.target !== brandIcon) {
+        userMenu.hidden = true;
+      }
+    });
+
+    // Renderizar menú según estado de usuario
+    function renderMenu() {
+      if (!auth.currentUser) {
+        menuContent.innerHTML = `
+          <h3>Registro / Login</h3>
+          <button onclick="registrarUsuario()">Registrarse</button>
+          <button onclick="iniciarSesion()">Iniciar sesión</button>
+        `;
+      } else {
+        menuContent.innerHTML = `
+          <h3>Usuario: <b>${auth.currentUser.email}</b></h3>
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+          <button onclick="incrementarRacha()">Registrar racha</button>
+        `;
+      }
+    }
+  </script>
+
+  <!-- Script para interacción con el zorro y chat -->
+  <script>
+    const foxImg = document.getElementById('foxImg');
+    const bubble = document.getElementById('bubbleDialog');
+    const chatBar = document.getElementById('chatBar');
+    let talking = false;
+
+    foxImg.addEventListener('mouseenter', () => {
+      if (!talking) bubble.hidden = false;
+    });
+    foxImg.addEventListener('mouseleave', () => {
+      if (!talking) bubble.hidden = true;
+    });
+
+    foxImg.addEventListener('click', () => {
+      foxImg.src = 'src/images/fox_talk.png';
+      bubble.textContent = '¡Estoy listo para responder!';
+      chatBar.hidden = false;
+      talking = true;
+    });
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyChJlaDXJNOxkhwnLI8RA-QkLAki8CNNII",
+      authDomain: "cibershield-3a19e.firebaseapp.com",
+      projectId: "Tcibershield-3a19e",
+      storageBucket: "cibershield-3a19e.firebasestorage.app",
+      messagingSenderId: "556758576720",
+      appId: "1:556758576720:web:55c82e4059b2a5e5d2eb55",
+      measurementId: "G-XZR3LVPZS9"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.getAuth(app);
+    const db = firebase.getFirestore(app);
+  </script>
+
+<!-- Contador de interacciones -->
+<script>
+  async function incrementarContador(opcion) {
+    const docRef = firebase.doc(db, "ContadorVistas", "Opciones");
+    await firebase.updateDoc(docRef, {
+      [opcion]: firebase.increment(1) // Incrementa el campo correspondiente
+    });
+  }
+
+  // Agregar eventos a las opciones
+  document.querySelectorAll('.tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const opcion = tile.querySelector('.txt').textContent.replace(/\s+/g, ''); // Obtiene el texto de la opción
+      incrementarContador(opcion); // Llama a la función para incrementar el contador
+    });
+  });
+</script>
+
+  <!-- Registro y login -->
+  <script>
+    async function registrarUsuario() {
+      const email = prompt("Introduce tu correo:");
+      const password = prompt("Introduce tu contraseña:");
+      try {
+        await firebase.createUserWithEmailAndPassword(auth, email, password);
+        alert("Usuario registrado con éxito");
+      } catch (error) {
+        alert("Error al registrar: " + error.message);
+      }
+    }
+
+    async function iniciarSesion() {
+      const email = prompt("Introduce tu correo:");
+      const password = prompt("Introduce tu contraseña:");
+      try {
+        await firebase.signInWithEmailAndPassword(auth, email, password);
+        alert("Inicio de sesión exitoso");
+      } catch (error) {
+        alert("Error al iniciar sesión: " + error.message);
+      }
+    }
+
+    async function cerrarSesion() {
+      await firebase.signOut(auth);
+      alert("Sesión cerrada");
+    }
+  </script>
+
+  <!-- Racha diaria -->
+  <script>
+    async function incrementarRacha() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Inicia sesión para registrar tu racha");
+        return;
+      }
+
+      const docRef = firebase.doc(db, "ContadorVistas", "Racha");
+      const docSnap = await firebase.getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const noDias = docSnap.data().NoDias || 0;
+        await firebase.updateDoc(docRef, { NoDias: noDias + 1 });
+        alert(`Racha incrementada: ${noDias + 1} días`);
+      } else {
+        await firebase.setDoc(docRef, { NoDias: 1 });
+        alert("Racha iniciada: 1 día");
+      }
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        incrementarRacha();
+      }
+    });
+  </script>
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
 </body>
 </html>

@@ -6,6 +6,7 @@
   <title>Juegos • CiberShield</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
+<<<<<<< HEAD
     /* Estilos adicionales para la galería de juegos */
     .main-centered {
       width: 100%;
@@ -34,16 +35,30 @@
       margin: 10px 0 0;
     }
 
+=======
+    /* Estilos específicos para la galería de juegos */
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
     .games-gallery {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 24px;
+<<<<<<< HEAD
       margin: 40px 0;
+=======
+      width: 100%;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
     }
 
     .game-card {
       background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
+<<<<<<< HEAD
       border-radius: 16px;
+=======
+      border-radius: 14px;
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
       overflow: hidden;
       text-decoration: none;
       color: var(--c-text);
@@ -63,6 +78,7 @@
 
     .game-image {
       width: 100%;
+<<<<<<< HEAD
       height: 180px;
       object-fit: cover;
       border-bottom: 1px solid var(--tile-br);
@@ -70,6 +86,15 @@
 
     .game-info {
       padding: 20px;
+=======
+      height: 140px;
+      object-fit: cover;
+      border-bottom: 2px solid var(--tile-br);
+    }
+
+    .game-info {
+      padding: 5px;
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -92,6 +117,7 @@
       line-height: 1.4;
     }
 
+<<<<<<< HEAD
     .volver-btn {
       display: inline-flex;
       align-items: center;
@@ -112,11 +138,79 @@
       box-shadow: 0 4px 24px rgba(122,92,255,.25);
     }
 
+=======
+    .games-header {
+      text-align: center;
+      margin: 0px 0 0px;
+    }
+
+    .games-header h1 {
+      font-size: clamp(28px, 5.5vw, 48px);
+      margin: 0;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-cyan), var(--c-morado), var(--c-purp));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .games-header p {
+      color: var(--c-muted);
+      font-size: 1.1rem;
+      margin: 10px 0 0;
+    }
+
+    /* Botón de volver al inicio (solo flecha) */
+    .back-to-home {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--c-azul), var(--c-morado));
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 24px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(122,92,255,.25);
+      z-index: 10;
+    }
+
+    .back-to-home:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(122,92,255,.4);
+    }
+
+    /* Ajuste para dispositivos móviles */
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
     @media (max-width: 700px) {
       .games-gallery {
         grid-template-columns: 1fr;
         gap: 16px;
       }
+<<<<<<< HEAD
+=======
+      
+      .back-to-home {
+        left: 15px;
+        bottom: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+      
+      .game-info {
+        padding: 16px;
+      }
+      
+      .game-title {
+        font-size: 1.2rem;
+      }
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
     }
   </style>
 </head>
@@ -124,7 +218,11 @@
   <!-- Fondo degradado decorativo -->
   <div class="bg-gradient" aria-hidden="true"></div>
 
+<<<<<<< HEAD
   <!-- Barra superior -->
+=======
+  <!-- Barra superior con marca y búsqueda -->
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
   <header class="topbar">
     <div class="brand">
       <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
@@ -142,6 +240,7 @@
     <div id="menuContent"></div>
   </div>
 
+<<<<<<< HEAD
   <!-- Contenido Principal Centrado -->
   <main class="main-centered">
     <section class="games-header">
@@ -184,21 +283,147 @@
 
   <!-- Botón de volver al inicio -->
   <a href="../index.html" class="volver-btn" style="position: fixed; bottom: 20px; left: 20px;" title="Volver al inicio">← Volver</a>
+=======
+  <!-- Layout principal con paneles laterales y centro -->
+  <main class="layout">
+    <!-- Panel izquierdo: categorías -->
+    <nav class="side left" aria-label="Categorías izquierda">
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico earth" aria-hidden="true"></span>
+        <span class="txt">Paisajes y regiones</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico tiger" aria-hidden="true"></span>
+        <span class="txt">Seguridad Online</span>
+      </a>
+      <a class="tile" href="juegos.html" role="button">
+        <span class="ico lab" aria-hidden="true"></span>
+        <span class="txt">Juegos</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico abacus" aria-hidden="true"></span>
+        <span class="txt">Articulos</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico ball" aria-hidden="true"></span>
+        <span class="txt">Recomendaciones</span>
+      </a>
+    </nav>
+
+    <!-- Centro: galería de juegos -->
+    <section class="center" aria-labelledby="titulo">
+      <div class="games-header">
+        <h1>Juegos Educativos</h1>
+        <p>Mejora tus habilidades mientras te diviertes</p>
+      </div>
+
+      <div class="games-gallery">
+        <!-- Ejemplo de tarjeta de juego -->
+        <a href="https://example.com/juego1" target="_blank" class="game-card">
+          <img src="images/niños_trompo.jpg" alt="Seguridad en Línea Quiz" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Seguridad en Línea Quiz</h3>
+            <p class="game-description">Pon a prueba tus conocimientos sobre seguridad digital</p>
+          </div>
+        </a>
+
+        <a href="https://example.com/juego2" target="_blank" class="game-card">
+          <img src="images/placeholder-game2.jpg" alt="CiberAventura" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">CiberAventura</h3>
+            <p class="game-description">Aventura gráfica para aprender sobre amenazas digitales</p>
+          </div>
+        </a>
+
+        <a href="https://example.com/juego3" target="_blank" class="game-card">
+          <img src="images/placeholder-game3.jpg" alt="Password Defender" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Password Defender</h3>
+            <p class="game-description">Juego de estrategia para crear contraseñas seguras</p>
+          </div>
+        </a>
+
+        <a href="https://example.com/juego4" target="_blank" class="game-card">
+          <img src="images/placeholder-game4.jpg" alt="Phishing Hunter" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Phishing Hunter</h3>
+            <p class="game-description">Identifica correos fraudulentos en este juego de detective</p>
+          </div>
+        </a>
+
+        <a href="https://example.com/juego5" target="_blank" class="game-card">
+          <img src="images/placeholder-game5.jpg" alt="Data Protect" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Data Protect</h3>
+            <p class="game-description">Protege tus datos personales de los hackers</p>
+          </div>
+        </a>
+
+        <a href="https://example.com/juego6" target="_blank" class="game-card">
+          <img src="images/placeholder-game6.jpg" alt="CyberTrivia" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">CyberTrivia</h3>
+            <p class="game-description">Preguntas y respuestas sobre mundo digital</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Panel derecho: categorías -->
+    <nav class="side right" aria-label="Categorías derecha">
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico pharaoh" aria-hidden="true"></span>
+        <span class="txt">MinTic</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico people" aria-hidden="true"></span>
+        <span class="txt">Downloads</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico pen" aria-hidden="true"></span>
+        <span class="txt">Referencias</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico palette" aria-hidden="true"></span>
+        <span class="txt">Examen</span>
+      </a>
+      <a class="tile" href="proximamente.html" role="button">
+        <span class="ico puzzle" aria-hidden="true"></span>
+        <span class="txt">Racha</span>
+      </a>
+    </nav>
+  </main>
+
+  <!-- Botón de volver al inicio (solo flecha) -->
+  <a href="../index.html" class="back-to-home" title="Volver al inicio">
+    ←
+  </a>
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
 
   <!-- Pie de página -->
   <footer class="footer">
     <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
   </footer>
 
+<<<<<<< HEAD
   <!-- Script de UI -->
   <script>
     // Script para gestión de usuario y menú
+=======
+  <!-- Script principal: gestión de usuario y menú -->
+  <script>
+    // Elementos principales
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
     const brandIcon = document.getElementById('brandIcon');
     const userMenu = document.getElementById('userMenu');
     const menuContent = document.getElementById('menuContent');
     const brandText = document.getElementById('brandText');
     const brandSub = document.getElementById('brandSub');
+<<<<<<< HEAD
     let usuario = null;
+=======
+    let usuario = null; // Usuario actual (null si no hay usuario)
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
 
     // Simulación de racha de usuario
     function getRacha() {

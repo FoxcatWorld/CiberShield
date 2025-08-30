@@ -1,5 +1,6 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "@dataconnect/generated": "file:src/dataconnect-generated",
     "firebase": "^12.2.1"
   },
@@ -8,5 +9,8 @@
   },
   "scripts": {
     "dev": "vite"
+=======
+    "firebase": "^12.2.0"
+>>>>>>> bc5665c95953ab13322f64ba653c3e9a17e2fb68
   }
 }
