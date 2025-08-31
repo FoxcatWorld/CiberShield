@@ -38,3 +38,5 @@ async function incrementViewCounter(field) {
     console.error("Error incrementing view counter: ", error);
   }
 }
+
+export { incrementViewCounter };
