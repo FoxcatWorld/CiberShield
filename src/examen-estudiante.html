@@ -134,7 +134,7 @@
       transition: transform .2s, box-shadow .2s;
     }
 
-    .nav-btn:hover {
+    .nav-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(122,92,255,.3);
     }
@@ -144,6 +144,7 @@
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
+      opacity: 0.6;
     }
 
     .submit-container {
@@ -163,9 +164,17 @@
       transition: transform .2s, box-shadow .2s;
     }
 
-    .submit-btn:hover {
+    .submit-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(32,212,248,.4);
+    }
+
+    .submit-btn:disabled {
+      background: var(--c-muted);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.6;
     }
 
     /* Modal de resultados */
@@ -388,11 +397,11 @@
 
           <div class="navigation-buttons">
             <button type="button" class="nav-btn" id="prev-btn" disabled>Anterior</button>
-            <button type="button" class="nav-btn" id="next-btn">Siguiente</button>
+            <button type="button" class="nav-btn" id="next-btn" disabled>Siguiente</button>
           </div>
 
           <div class="submit-container">
-            <button type="button" class="submit-btn" id="submit-btn" style="display: none;">Finalizar Examen</button>
+            <button type="button" class="submit-btn" id="submit-btn" style="display: none;" disabled>Finalizar Examen</button>
           </div>
         </form>
       </div>
@@ -408,8 +417,8 @@
       <div class="result-score" id="result-score">0/15</div>
       <p class="result-message" id="result-message"></p>
       <div class="result-actions">
-        <button class="result-btn" id="review-btn">Revisar Respuestas</button>
         <a href="examen.html" class="result-btn">Volver a Exámenes</a>
+        <button class="result-btn" onclick="window.location.reload()">Repetir Examen</button>
       </div>
     </div>
   </div>
@@ -601,7 +610,6 @@
     const resultIcon = document.getElementById('result-icon');
     const resultTitle = document.getElementById('result-title');
     const modalClose = document.getElementById('modal-close');
-    const reviewBtn = document.getElementById('review-btn');
 
     // Inicializar el examen
     function initExam() {
@@ -613,7 +621,6 @@
       nextBtn.addEventListener('click', goToNextQuestion);
       submitBtn.addEventListener('click', submitExam);
       modalClose.addEventListener('click', () => resultModal.style.display = 'none');
-      reviewBtn.addEventListener('click', reviewAnswers);
       
       // Cerrar modal al hacer clic fuera
       resultModal.addEventListener('click', (e) => {
@@ -645,14 +652,17 @@
       
       // Actualizar estado de los botones
       prevBtn.disabled = index === 0;
-      nextBtn.disabled = index === questions.length - 1;
       
+      // Verificar si hay respuesta para habilitar siguiente/finalizar
+      const hasAnswer = userAnswers[index] !== null;
       if (index === questions.length - 1) {
         submitBtn.style.display = 'block';
         nextBtn.style.display = 'none';
+        submitBtn.disabled = !hasAnswer;
       } else {
         submitBtn.style.display = 'none';
         nextBtn.style.display = 'block';
+        nextBtn.disabled = !hasAnswer;
       }
       
       // Guardar respuesta cuando el usuario selecciona una opción
@@ -660,6 +670,13 @@
       radioButtons.forEach(radio => {
         radio.addEventListener('change', (e) => {
           userAnswers[index] = parseInt(e.target.value);
+          
+          // Habilitar el botón correspondiente
+          if (index === questions.length - 1) {
+            submitBtn.disabled = false;
+          } else {
+            nextBtn.disabled = false;
+          }
         });
       });
     }
@@ -727,12 +744,6 @@
       }
       
       resultModal.style.display = 'flex';
-    }
-
-    // Revisar respuestas
-    function reviewAnswers() {
-      resultModal.style.display = 'none';
-      alert('Función de revisión de respuestas en desarrollo. Pronto podrás ver qué preguntas acertaste y cuáles no.');
     }
 
     // Inicializar el examen cuando se carga la página
