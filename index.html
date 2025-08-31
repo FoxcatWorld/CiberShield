@@ -1,0 +1,172 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enciclopedia • Front-End</title>
+  <script type="module" crossorigin src="/CiberShield/assets/index-DWO6XNou.js"></script>
+  <link rel="stylesheet" crossorigin href="/CiberShield/assets/index-CcS1baR1.css">
+</head>
+<body>
+  <!-- Fondo degradado decorativo -->
+  <div class="bg-gradient" aria-hidden="true"></div>
+
+  <!-- Barra superior con marca y búsqueda -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
+      <strong id="brandText">CiberShield</strong>
+      <span id="brandSub">Tu escudo digital.</span>
+    </div>
+    <form class="search" role="search" aria-label="Buscar">
+      <input type="search" placeholder="Buscar…" aria-label="Buscar contenido" />
+      <button type="submit" aria-label="Ejecutar búsqueda">↵</button>
+    </form>
+  </header>
+
+  <!-- Menú de usuario emergente -->
+  <div class="user-menu" id="userMenu" hidden>
+    <div id="menuContent"></div>
+  </div>
+
+  <!-- Overlay para menú móvil -->
+  <div class="overlay" id="menuOverlay" hidden></div>
+
+  <!-- Menú de navegación lateral desplegable para móvil -->
+  <nav class="mobile-nav" id="mobileNav" hidden>
+    <button class="close-menu" id="closeMenu" aria-label="Cerrar menú de navegación">✕</button>
+    <div class="mobile-nav-content">
+      <a id="PaisRegiones-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico earth" aria-hidden="true"></span>
+        <span class="txt">Paisajes y regiones</span>
+      </a>
+      <a id="SeguridadOnline-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico tiger" aria-hidden="true"></span>
+        <span class="txt">Seguridad Online</span>
+      </a>
+      <a id="Juegos-mobile" class="tile" href="src/juegos.html" role="button">
+        <span class="ico lab" aria-hidden="true"></span>
+        <span class="txt">Juegos</span>
+      </a>
+      <a id="Articulos-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico abacus" aria-hidden="true"></span>
+        <span class="txt">Articulos</span>
+      </a>
+      <a id="Recomendaciones-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico ball" aria-hidden="true"></span>
+        <span class="txt">Recomendaciones</span>
+      </a>
+      <a id="MinTic-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pharaoh" aria-hidden="true"></span>
+        <span class="txt">MinTic</span>
+      </a>
+      <a id="Downloads-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico people" aria-hidden="true"></span>
+        <span class="txt">Downloads</span>
+      </a>
+      <a id="Referencias-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pen" aria-hidden="true"></span>
+        <span class="txt">Referencias</span>
+      </a>
+      <a id="Examen-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico palette" aria-hidden="true"></span>
+        <span class="txt">Examen</span>
+      </a>
+      <a id="Racha-mobile" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico puzzle" aria-hidden="true"></span>
+        <span class="txt">Racha</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Floating Action Button para abrir el menú móvil -->
+  <button class="fab-menu-toggle" id="fabMenuToggle" aria-label="Abrir menú de navegación" hidden>☰</button>
+
+  <!-- Layout principal con paneles laterales y centro -->
+  <main class="layout">
+    <!-- Panel izquierdo: categorías (oculto en móvil, ahora en mobile-nav) -->
+    <nav class="side left" aria-label="Categorías izquierda">
+      <a id="PaisRegiones-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico earth" aria-hidden="true"></span>
+        <span class="txt">Paisajes y regiones</span>
+      </a>
+      <a id="SeguridadOnline-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico tiger" aria-hidden="true"></span>
+        <span class="txt">Seguridad Online</span>
+      </a>
+      <a id="Juegos-desktop" class="tile" href="src/juegos.html" role="button">
+        <span class="ico lab" aria-hidden="true"></span>
+        <span class="txt">Juegos</span>
+      </a>
+      <a id="Articulos-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico abacus" aria-hidden="true"></span>
+        <span class="txt">Articulos</span>
+      </a>
+      <a id="Recomendaciones-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico ball" aria-hidden="true"></span>
+        <span class="txt">Recomendaciones</span>
+      </a>
+    </nav>
+
+    <!-- Centro: galería y chat IA -->
+    <section class="center" aria-labelledby="titulo">
+      <h1 id="titulo">
+        <span>CiberShield</span>
+        <em>Tu escudo digital.</em>
+      </h1>
+
+      <!-- Galería de personaje zorro -->
+      <div class="fox-gallery">
+        <img src="/CiberShield/assets/fox_idle-CDuGFsjo.png"
+             alt="Zorro personaje"
+             class="fox-img"
+             id="foxImg"
+             tabindex="0" />
+        <div class="bubble-dialog" id="bubbleDialog" hidden>
+          ¡Hola! Pasa el mouse o haz clic para hablar conmigo.
+        </div>
+      </div>
+
+      <!-- Barra de chat, oculta por defecto -->
+      <form class="chat-bar" id="chatBar" hidden>
+        <input type="text" placeholder="Hazme una pregunta..." aria-label="Pregunta al zorro" />
+        <button type="submit">Enviar</button>
+      </form>
+
+      <p class="tagline">La IA aún no está disponible, ¡pero lo estará pronto!</p>
+    </section>
+
+    <!-- Panel derecho: categorías (oculto en móvil, ahora en mobile-nav) -->
+    <nav class="side right" aria-label="Categorías derecha">
+      <a id="MinTic-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pharaoh" aria-hidden="true"></span>
+        <span class="txt">MinTic</span>
+      </a>
+      <a id="Downloads-desktop" class="tile" href="src/downloads.html" role="button">
+        <span class="ico people" aria-hidden="true"></span>
+        <span class="txt">Downloads</span>
+      </a>
+      <a id="Referencias-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico pen" aria-hidden="true"></span>
+        <span class="txt">Referencias</span>
+      </a>
+      <a id="Examen-desktop" class="tile" href="src/examen.html" role="button">
+        <span class="ico palette" aria-hidden="true"></span>
+        <span class="txt">Examen</span>
+      </a>
+      <a id="Racha-desktop" class="tile" href="src/proximamente.html" role="button">
+        <span class="ico puzzle" aria-hidden="true"></span>
+        <span class="txt">Racha</span>
+      </a>
+    </nav>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
+  </footer>
+
+  <!-- Scripts -->
+</body>
+</html>
