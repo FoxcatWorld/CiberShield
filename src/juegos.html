@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -6,12 +5,266 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Juegos • CiberShield</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Ocultar paneles laterales */
+    .side {
+      display: none !important;
+    }
+    
+    /* Ajustar el layout principal */
+    .layout {
+      display: block !important;
+    }
+    
+    .center {
+      width: 100% !important;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Estilos para la galería de juegos */
+    .games-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .game-card {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.8));
+      border-radius: 16px;
+      overflow: hidden;
+      color: var(--c-text);
+      border: 1px solid var(--tile-br);
+      box-shadow: var(--shadow);
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(20, 30, 70, .55);
+      border-color: rgba(98, 160, 255, .45);
+    }
+
+    .game-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--tile-br);
+    }
+
+    .game-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .game-title {
+      margin: 0 0 12px 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .game-description {
+      margin: 0;
+      color: var(--c-muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .game-type {
+      display: inline-block;
+      padding: 4px 8px;
+      background: rgba(122, 92, 255, 0.2);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-top: 8px;
+      color: var(--c-morado);
+    }
+
+    .games-header {
+      text-align: center;
+      margin: 15px 0 20px;
+    }
+
+    .games-header h1 {
+      font-size: clamp(28px, 5.5vw, 48px);
+      margin: 0;
+      background: linear-gradient(90deg, var(--c-azul), var(--c-cyan), var(--c-morado), var(--c-purp));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .games-header p {
+      color: var(--c-muted);
+      font-size: 1.1rem;
+      margin: 10px 0 0;
+    }
+
+    /* Modal de información */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: linear-gradient(180deg, var(--tile-bg), rgba(10,15,35,.95));
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      border: 1px solid var(--tile-br);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--c-muted);
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: var(--c-text);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-title {
+      margin-top: 0;
+      font-size: 1.8rem;
+      color: var(--c-text);
+      margin-bottom: 15px;
+    }
+
+    .modal-description {
+      color: var(--c-muted);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .modal-play-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(90deg, var(--c-cyan), var(--c-azul));
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .modal-play-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(32,212,248,.3);
+    }
+
+    /* Botón de volver al inicio (solo flecha) */
+    .back-to-home {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--c-azul), var(--c-morado));
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 24px;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(122,92,255,.25);
+      z-index: 10;
+    }
+
+    .back-to-home:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(122,92,255,.4);
+    }
+
+    /* Ajuste para dispositivos móviles */
+    @media (max-width: 700px) {
+      .games-gallery {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .back-to-home {
+        left: 15px;
+        bottom: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+      
+      .game-info {
+        padding: 16px;
+      }
+      
+      .game-title {
+        font-size: 1.2rem;
+      }
+      
+      .modal-content {
+        padding: 20px;
+        width: 95%;
+      }
+      
+      .modal-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Fondo degradado decorativo -->
   <div class="bg-gradient" aria-hidden="true"></div>
 
-  <!-- Barra superior -->
+  <!-- Barra superior con marca y búsqueda -->
   <header class="topbar">
     <div class="brand">
       <span class="brand-leaf interactive" id="brandIcon" aria-hidden="true">◆</span>
@@ -29,55 +282,249 @@
     <div id="menuContent"></div>
   </div>
 
-  <!-- Contenido Principal Centrado -->
-  <main class="main-centered">
-    <section class="games-header">
-      <h1>Juegos Educativos</h1>
-      <p>Mejora tus habilidades mientras te diviertes</p>
-    </section>
+  <!-- Layout principal con paneles laterales ocultos -->
+  <main class="layout">
+    <!-- Centro: galería de juegos -->
+    <section class="center" aria-labelledby="titulo">
+      <div class="games-header">
+        <h1>Juegos Educativos</h1>
+        <p>Mejora tus habilidades mientras te diviertes</p>
+      </div>
 
-    <div class="games-gallery">
-      <!-- Tarjetas de juego -->
-      <a href="#" class="game-card">
-        <img src="images/niños_trompo.jpg" alt="Seguridad en Línea Quiz" class="game-image">
-        <div class="game-info">
-          <h3 class="game-title">Seguridad en Línea Quiz</h3>
-          <p class="game-description">Pon a prueba tus conocimientos sobre seguridad digital</p>
+      <div class="games-gallery">
+        <!-- Juego 1: Descubre al Suplantador -->
+        <div class="game-card" data-title="Descubre al Suplantador" data-description="Este juego te enseña sobre la problemática de la suplantación de identidad. Aprende a identificar robos de cuentas y perfiles falsos mientras te diviertes resolviendo desafíos interactivos." data-link="https://www.incibe.es/menores/juegos/juegos-didacticos" data-link-text="Jugar Ahora">
+          <img src="images/suplantador.jpg" alt="Descubre al Suplantador" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Descubre al Suplantador</h3>
+            <p class="game-description">Identifica robos de cuentas y perfiles falsos</p>
+            <span class="game-type">JUEGO INTERACTIVO</span>
+          </div>
         </div>
-      </a>
-      <a href="#" class="game-card">
-        <img src="images/placeholder-game2.jpg" alt="CiberAventura" class="game-image">
-        <div class="game-info">
-          <h3 class="game-title">CiberAventura</h3>
-          <p class="game-description">Aventura gráfica para aprender sobre amenazas digitales</p>
+
+        <!-- Juego 2: CiberAventura -->
+        <div class="game-card" data-title="Concurso de preguntas: Redes Sociales" 
+        data-description="Un cuestionario de opción múltiple con límite de tiempo, comodines y una ronda de bonificación acerca de redes sociales y su usabilidad" 
+        data-link="https://www.incibe.es/menores/juegos/juegos-didacticos" 
+        data-link-text="Jugar Ahora">
+          <img src="images/cuestionario.png" alt="CiberAventura" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">CiberCuestionario</h3>
+            <p class="game-description">Cuestionario de seguridad </p>
+            <span class="game-type">CUESTIONARIO</span>
+          </div>
         </div>
-      </a>
-      <a href="#" class="game-card">
-        <img src="images/placeholder-game3.jpg" alt="Password Defender" class="game-image">
-        <div class="game-info">
-          <h3 class="game-title">Password Defender</h3>
-          <p class="game-description">Juego de estrategia para crear contraseñas seguras</p>
+
+        <!-- Juego 3: Password Defender -->
+        <div class="game-card" data-title="Las contraseñas " 
+        data-description="Video introductorio sobre la importancia de las contraseñas en el ámbito de las computadoras." 
+        data-link="https://es.educaplay.com/recursos-educativos/16757107-las_contrasenas.html" 
+        data-link-text="Jugar Ahora">
+          <img src="images/contraseñas.png" alt="Las contraseñas " class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Las contraseñas </h3>
+            <p class="game-description">Estrategia para crear contraseñas seguras</p>
+            <span class="game-type">JUEGO INTERACTIVO</span>
+          </div>
         </div>
-      </a>
-      <a href="#" class="game-card">
-        <img src="images/placeholder-game4.jpg" alt="Phishing Hunter" class="game-image">
-        <div class="game-info">
-          <h3 class="game-title">Phishing Hunter</h3>
-          <p class="game-description">Identifica correos fraudulentos en este juego de detective</p>
+
+        <!-- Juego 4: Phishing Hunter -->
+        <div class="game-card" data-title="Cyberscouts" 
+        data-description="Este juego esta pensado tanto para niños (de más de 6 años) como para padres. Hay un área para los más pequeños y otra para adultos, como distintos niveles de dificultad." 
+        data-link="https://cyberscouts.osi.es" 
+        data-link-text="Jugar Ahora">
+          <img src="images/Cyberscouts.png" alt="Cyberscouts" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Cyberscouts</h3>
+            <p class="game-description">Niveles a recorrer</p>
+            <span class="game-type">JUEGO DE NIVELES</span>
+          </div>
         </div>
-      </a>
-    </div>
+
+        <!-- Juego 2: CiberAventura -->
+        <div class="game-card" data-title="Interland" 
+        data-description="4 mundos Google y 4 minijuegos para aprender a crear contraseñas seguras, a comportarnos en redes sociales, a escapar de hackers... ¡todo, todo!" 
+        data-link="https://beinternetawesome.withgoogle.com/es-419_all/interland" 
+        data-link-text="Jugar Ahora">
+          <img src="images/interland.png" alt="Interland" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Interland</h3>
+            <p class="game-description">Aventura gráfica sobre amenazas digitales</p>
+            <span class="game-type">AVENTURA GRÁFICA</span>
+          </div>
+        </div>
+
+        <!-- Juego 2: CiberAventura -->
+        <div class="game-card" data-title="Space Shelter" 
+        data-description="Una colaboración entre Euroconsumers y Google resultó en el desarrollo de SpaceShelter, un juego online con el propósito de concientizar a los consumidores sobre las cuestiones de ciberseguridad y promover comportamientos más responsables durante la navegación online." 
+        data-link="https://games.gamindo.com/videogames/google/1/?https://games.gamindo.com/videogames/google" 
+        data-link-text="Jugar Ahora">
+          <img src="images/space.png" alt="Space Shelter" class="game-image">
+          <div class="game-info">
+            <h3 class="game-title">Space Shelter</h3>
+            <p class="game-description">Aventura gráfica sobre amenazas digitales</p>
+            <span class="game-type">AVENTURA GRÁFICA</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
   </main>
 
-  <!-- Botón de volver al inicio -->
-  <a href="../index.html" class="volver-btn" style="position: fixed; bottom: 20px; left: 20px;" title="Volver al inicio">← Volver</a>
+  <!-- Modal para mostrar información del juego -->
+  <div class="modal" id="gameModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">×</button>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-description" id="modalDescription"></p>
+      <div class="modal-buttons" id="modalButtons">
+        <!-- Los botones se insertarán dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón de volver al inicio (solo flecha) -->
+  <a href="../index.html" class="back-to-home" title="Volver al inicio">
+    ←
+  </a>
 
   <!-- Pie de página -->
   <footer class="footer">
     <small>© 2025 Proyecto educativo. Interfaz inspirada en software clásico.</small>
   </footer>
 
-  <!-- Script de UI -->
-  <script src="ui.js"></script>
+  <!-- Script para funcionalidad del modal -->
+  <script>
+    // Elementos del modal
+    const modal = document.getElementById('gameModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalButtons = document.getElementById('modalButtons');
+    const modalClose = document.getElementById('modalClose');
+    
+    // Obtener todas las tarjetas de juegos
+    const gameCards = document.querySelectorAll('.game-card');
+    
+    // Agregar evento click a cada tarjeta
+    gameCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.getAttribute('data-title');
+        const description = card.getAttribute('data-description');
+        const link = card.getAttribute('data-link');
+        const linkText = card.getAttribute('data-link-text') || 'Jugar Ahora';
+        
+        // Actualizar modal con la información
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        
+        // Limpiar botones anteriores
+        modalButtons.innerHTML = '';
+        
+        // Crear botón para jugar
+        if (link) {
+          const playBtn = document.createElement('a');
+          playBtn.href = link;
+          playBtn.target = '_blank';
+          playBtn.className = 'modal-play-btn';
+          playBtn.textContent = linkText;
+          modalButtons.appendChild(playBtn);
+        }
+        
+        // Mostrar modal
+        modal.style.display = 'flex';
+      });
+    });
+    
+    // Cerrar modal al hacer clic en la X
+    modalClose.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+    
+    // Cerrar modal al hacer clic fuera del contenido
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+    
+    // Cerrar modal con la tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        modal.style.display = 'none';
+      }
+    });
+
+    // Script principal: gestión de usuario y menú
+    const brandIcon = document.getElementById('brandIcon');
+    const userMenu = document.getElementById('userMenu');
+    const menuContent = document.getElementById('menuContent');
+    const brandText = document.getElementById('brandText');
+    const brandSub = document.getElementById('brandSub');
+    let usuario = null;
+
+    function getRacha() {
+      return [
+        {dia: 1, emoji: '🌞', activo: true},
+        {dia: 2, emoji: '🔥', activo: true},
+        {dia: 3, emoji: '🔥', activo: true},
+        {dia: 4, emoji: '❌', activo: false},
+        {dia: 5, emoji: '🔥', activo: true},
+        {dia: 6, emoji: '💧', activo: false},
+        {dia: 7, emoji: '🔥', activo: true}
+      ];
+    }
+
+    brandIcon.addEventListener('click', () => {
+      if (userMenu.hidden) {
+        renderMenu();
+        userMenu.hidden = false;
+      } else {
+        userMenu.hidden = true;
+      }
+    });
+
+    document.addEventListener('mousedown', e => {
+      if (!userMenu.contains(e.target) && e.target !== brandIcon) {
+        userMenu.hidden = true;
+      }
+    });
+
+    function renderMenu() {
+      if (!usuario) {
+        menuContent.innerHTML = `
+          <h3>Registro / Login</h3>
+          <input type="text" id="nombreUsuario" placeholder="Nombre de usuario" autocomplete="username" />
+          <button onclick="registrarUsuario()">Registrarse / Iniciar sesión</button>
+        `;
+      } else {
+        const racha = getRacha();
+        menuContent.innerHTML = `
+          <h3>Usuario: <b>@${usuario}</b></h3>
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+          <div class="calendar">
+            ${racha.map(d => `<span title="Día ${d.dia}">${d.emoji}</span>`).join('')}
+          </div>
+          <small style="display:block;margin-top:8px;color:var(--c-muted);">Racha: ${racha.filter(d=>d.emoji==='🔥').length} días</small>
+        `;
+      }
+    }
+
+    window.registrarUsuario = function() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre) {
+        usuario = nombre;
+        brandText.textContent = "Bienvenido,";
+        brandSub.textContent = `@${usuario}`;
+        userMenu.hidden = true;
+      }
+    }
+
+    window.cerrarSesion = function() {
+      usuario = null;
+      brandText.textContent = "CiberShield";
+      brandSub.textContent = "Tu escudo digital.";
+      userMenu.hidden = true;
+    }
+  </script>
 </body>
 </html>

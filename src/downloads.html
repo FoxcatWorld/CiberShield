@@ -84,6 +84,16 @@
       line-height: 1.4;
     }
 
+    .download-type {
+      display: inline-block;
+      padding: 4px 8px;
+      background: rgba(42, 109, 246, 0.2);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-top: 8px;
+      color: var(--c-azul);
+    }
+
     .downloads-header {
       text-align: center;
       margin: 15px 0 20px;
@@ -164,10 +174,16 @@
       margin-bottom: 25px;
     }
 
-    .modal-download-btn {
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .modal-download-btn, .modal-link-btn {
       display: inline-block;
       padding: 12px 24px;
-      background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
       color: white;
       text-decoration: none;
       border-radius: 12px;
@@ -178,7 +194,15 @@
       font-size: 1rem;
     }
 
-    .modal-download-btn:hover {
+    .modal-download-btn {
+      background: linear-gradient(90deg, var(--c-azul), var(--c-morado));
+    }
+
+    .modal-link-btn {
+      background: linear-gradient(90deg, var(--c-cyan), var(--c-azul));
+    }
+
+    .modal-download-btn:hover, .modal-link-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 20px rgba(122,92,255,.3);
     }
@@ -236,6 +260,10 @@
         padding: 20px;
         width: 95%;
       }
+      
+      .modal-buttons {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -272,51 +300,75 @@
 
       <div class="downloads-gallery">
         <!-- Ejemplo de tarjeta de descargable -->
-        <div class="download-card" data-title="Guía de Seguridad Básica" data-description="Una guía completa con consejos esenciales para proteger tu información personal en línea. Incluye recomendaciones para crear contraseñas seguras, identificar phishing y configurar la privacidad en redes sociales." data-file="guia-seguridad-basica.pdf">
-          <img src="images/descargable1.jpg" alt="Guía de Seguridad Básica" class="download-image">
+        <div class="download-card" data-title="¡Carta! el juego de ciberseguridad para las redes sociales" 
+        data-description="Este juego consiste sobre la problemática de la suplantación de identidad (robos de cuentas y perfiles falsos)." 
+        data-link="https://www.incibe.es/menores/juegos/juegos-didacticos/carta-el-juego-de-ciberseguridad-para-las-redes-sociales" 
+        data-link-text="Accede a los juegos">
+          <img src="images/carta.jpg" alt="¡Carta! el juego de ciberseguridad para las redes sociales" class="download-image">
           <div class="download-info">
-            <h3 class="download-title">Guía de Seguridad Básica</h3>
-            <p class="download-description">PDF • 2.5 MB</p>
+            <h3 class="download-title">¡Carta! el juego de ciberseguridad para las redes sociales</h3>
+            <p class="download-description">juegos descargables</p>
+            <span class="download-type">ENLACE EXTERNO</span>
           </div>
         </div>
 
-        <div class="download-card" data-title="Plantilla de Contraseñas Seguras" data-description="Una plantilla editable para gestionar y crear contraseñas robustas. Incluye consejos para generar combinaciones seguras y un sistema para organizar tus credenciales de forma segura." data-file="plantilla-contraseñas.xlsx">
-          <img src="images/descargable2.jpg" alt="Plantilla de Contraseñas Seguras" class="download-image">
+        <div class="download-card" data-title="Los puzles de la ciberseguridad" 
+        data-description="Este juego consiste sobre la problemática de la suplantación de identidad (robos de cuentas y perfiles falsos)." 
+        data-link="https://www.incibe.es/menores/juegos/juegos-didacticos/los-puzles-de-la-ciberseguridad" 
+        data-link-text="Accede a los juegos">
+          <img src="images/puzles.jpg" alt="Los puzles de la ciberseguridad" class="download-image">
           <div class="download-info">
-            <h3 class="download-title">Plantilla de Contraseñas</h3>
-            <p class="download-description">Excel • 1.1 MB</p>
+            <h3 class="download-title">Los puzles de la ciberseguridad</h3>
+            <p class="download-description">juegos descargables</p>
+            <span class="download-type">ENLACE EXTERNO</span>
           </div>
         </div>
 
-        <div class="download-card" data-title="Checklist de Seguridad Digital" data-description="Una lista de verificación para asegurar que todos tus dispositivos y cuentas están protegidos. Perfecta para realizar auditorías periódicas de tu seguridad digital." data-file="checklist-seguridad.docx">
-          <img src="images/descargable3.jpg" alt="Checklist de Seguridad Digital" class="download-image">
+        <div class="download-card" data-title="Descubre al suplantador" 
+        data-description="Este juego consiste sobre la problemática de la suplantación de identidad (robos de cuentas y perfiles falsos)." 
+        data-link="https://www.incibe.es/menores/tematicas/suplantacion-de-identidad/descubre-al-suplantador" 
+        data-link-text="Accede a los juegos">
+          <img src="images/suplantador.jpg" alt="Juegos de Ciberseguridad" class="download-image">
           <div class="download-info">
-            <h3 class="download-title">Checklist de Seguridad</h3>
-            <p class="download-description">Word • 0.8 MB</p>
+            <h3 class="download-title">Descubre al suplantador</h3>
+            <p class="download-description">juegos descargables</p>
+            <span class="download-type">ENLACE EXTERNO</span>
           </div>
         </div>
 
-        <div class="download-card" data-title="Infografía: Phishing" data-description="Una infografía colorida que explica cómo identificar y evitar ataques de phishing. Incluye ejemplos visuales de correos sospechosos y enlaces maliciosos." data-file="infografia-phishing.png">
-          <img src="images/descargable4.jpg" alt="Infografía: Phishing" class="download-image">
+        <div class="download-card" 
+        data-title="GUÍA DE HERRAMIENTAS DE CONTROL PARENTAL" 
+        data-description="Esta guía ha sido desarrollada por el Instituto Nacional de Ciberseguridad (INCIBE) a través de Internet Segura for Kids (IS4K), en colaboración con la Confederación Española de Asociaciones de Padres y Madres del Alumnado (CEAPA), la Confederación Católica Nacional de Padres de Familia y padres de Alumnos (CONCAPA) y la Asociación de Internautas. " 
+        data-file="controles-parentales.pdf">
+          <img src="images/controlparent.png" alt="Control parental" class="download-image">
           <div class="download-info">
-            <h3 class="download-title">Infografía: Phishing</h3>
-            <p class="download-description">PNG • 3.2 MB</p>
+            <h3 class="download-title">GUÍA DE HERRAMIENTAS DE CONTROL PARENTAL</h3>
+            <p class="download-description">PDF • 19 MB</p>
+            <span class="download-type">DESCARGA</span>
           </div>
         </div>
 
-        <div class="download-card" data-title="Manual de Configuración de Privacidad" data-description="Instrucciones paso a paso para configurar la privacidad en las redes sociales y servicios más populares. Mantén tu información personal bajo control." data-file="manual-privacidad.zip">
-          <img src="images/descargable5.jpg" alt="Manual de Configuración de Privacidad" class="download-image">
+        <div class="download-card" data-title="Guías de privacidad de las redes sociales" 
+        data-description="Este juego consiste sobre la problemática de la suplantación de identidad (robos de cuentas y perfiles falsos)." 
+        data-link="https://www.internetmatters.org/es/parental-controls/social-media" 
+        data-link-text="Accede a los juegos">
+          <img src="images/redes-control.png" alt="Guías de privacidad de las redes sociales" class="download-image">
           <div class="download-info">
-            <h3 class="download-title">Manual de Privacidad</h3>
-            <p class="download-description">ZIP • 5.7 MB</p>
+            <h3 class="download-title">Guías de privacidad de las redes sociales</h3>
+            <p class="download-description">instrucciones y uso</p>
+            <span class="download-type">ENLACE EXTERNO</span>
           </div>
         </div>
 
-        <div class="download-card" data-title="Presentación: Ciberseguridad para Todos" data-description="Una presentación lista para usar en talleres o clases sobre conceptos básicos de ciberseguridad. Incluye notas para el presentador y actividades prácticas." data-file="presentacion-ciberseguridad.pptx">
-          <img src="images/descargable6.jpg" alt="Presentación: Ciberseguridad para Todos" class="download-image">
+        <div class="download-card" data-title="Videojuegos, consolas y plataformas: Guías de control parental" 
+        data-description="Este juego consiste sobre la problemática de la suplantación de identidad (robos de cuentas y perfiles falsos)." 
+        data-link="https://www.internetmatters.org/es/parental-controls/gaming-consoles" 
+        data-link-text="Accede a los juegos">
+          <img src="images/games.png" alt="Videojuegos, consolas y plataformas: Guías de control parental" class="download-image">
           <div class="download-info">
-            <h3 class="download-title">Presentación Educativa</h3>
-            <p class="download-description">PowerPoint • 8.4 MB</p>
+            <h3 class="download-title">Videojuegos, consolas y plataformas: Guías de control parental</h3>
+            <p class="download-description">instrucciones y uso</p>
+            <span class="download-type">ENLACE EXTERNO</span>
           </div>
         </div>
       </div>
@@ -329,7 +381,9 @@
       <button class="modal-close" id="modalClose">×</button>
       <h2 class="modal-title" id="modalTitle"></h2>
       <p class="modal-description" id="modalDescription"></p>
-      <a href="#" class="modal-download-btn" id="modalDownloadBtn">Descargar Archivo</a>
+      <div class="modal-buttons" id="modalButtons">
+        <!-- Los botones se insertarán dinámicamente -->
+      </div>
     </div>
   </div>
 
@@ -349,7 +403,7 @@
     const modal = document.getElementById('downloadModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalDescription = document.getElementById('modalDescription');
-    const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+    const modalButtons = document.getElementById('modalButtons');
     const modalClose = document.getElementById('modalClose');
     
     // Obtener todas las tarjetas de descargables
@@ -361,12 +415,36 @@
         const title = card.getAttribute('data-title');
         const description = card.getAttribute('data-description');
         const file = card.getAttribute('data-file');
+        const link = card.getAttribute('data-link');
+        const linkText = card.getAttribute('data-link-text') || 'Visitar Enlace';
         
         // Actualizar modal con la información
         modalTitle.textContent = title;
         modalDescription.textContent = description;
-        modalDownloadBtn.href = 'downloads/' + file;
-        modalDownloadBtn.download = file;
+        
+        // Limpiar botones anteriores
+        modalButtons.innerHTML = '';
+        
+        // Crear botones según el tipo de contenido
+        if (file) {
+          // Es un archivo para descargar
+          const downloadBtn = document.createElement('a');
+          downloadBtn.href = 'downloads/' + file;
+          downloadBtn.download = file;
+          downloadBtn.className = 'modal-download-btn';
+          downloadBtn.textContent = 'Descargar Archivo';
+          modalButtons.appendChild(downloadBtn);
+        }
+        
+        if (link) {
+          // Es un enlace externo
+          const linkBtn = document.createElement('a');
+          linkBtn.href = link;
+          linkBtn.target = '_blank';
+          linkBtn.className = 'modal-link-btn';
+          linkBtn.textContent = linkText;
+          modalButtons.appendChild(linkBtn);
+        }
         
         // Mostrar modal
         modal.style.display = 'flex';
